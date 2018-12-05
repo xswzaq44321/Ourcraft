@@ -46,31 +46,11 @@ public class Controller : MonoBehaviour {
 
         //camera angle//
         transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
-        //float max = transform.GetChild(0).eulerAngles.x - Input.GetAxis("Mouse Y");
-        //if ((max > 270 && max < 360) || (max > 0 && max < 90))
+        float max = transform.GetChild(0).eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        if (max >= 270 || max <= 90)
             transform.GetChild(0).Rotate(new Vector3(-Input.GetAxis("Mouse Y") * sensitivity, 0, 0) * Time.deltaTime);
 
-       // SetCursorPos(Screen.height, Screen.width);
-
-       /*if (!(transform.GetChild(0).eulerAngles.x >= 280 && transform.GetChild(0).eulerAngles.x <= 360) || !(transform.GetChild(0).eulerAngles.x >= 0 && transform.GetChild(0).eulerAngles.x <= 89))
-        {
-            if (transform.GetChild(0).eulerAngles.x < 270 && !(transform.GetChild(0).eulerAngles.x > 0 && transform.GetChild(0).eulerAngles.x < 90))
-            {
-                Quaternion max_angle = Quaternion.identity;
-                max_angle.eulerAngles = new Vector3(271, 0, 0);
-                transform.GetChild(0).rotation = max_angle;
-            }
-            else
-            {
-                Quaternion max_angle = Quaternion.identity;
-                max_angle.eulerAngles = new Vector3(89, 0, 0);
-                transform.GetChild(0).rotation = max_angle;
-            }
-        }*/
-       // Debug.Log(transform.GetChild(0).eulerAngles.x);
-       // Debug.Log(transform.GetChild(0).localRotation.x);
-
-
+       //SetCursorPos(Screen.height, Screen.width);
     }
 
     void OnCollisionEnter(Collision col)
