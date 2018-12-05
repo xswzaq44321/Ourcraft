@@ -35,7 +35,7 @@ public class Controller : MonoBehaviour {
         {
             transform.localPosition += speed * transform.right * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.Space) && onGround)
+        if (Input.GetKey(KeyCode.Space) )//&& onGround)
         {
             GetComponent<Rigidbody>().AddForce(Vector3.up * jump);
             onGround = false;
@@ -47,15 +47,7 @@ public class Controller : MonoBehaviour {
         if (max >= 270 || max <= 90)
             transform.GetChild(0).Rotate(new Vector3(-Input.GetAxis("Mouse Y") * sensitivity, 0, 0) * Time.deltaTime);
 
-        //SetCursorPos(500, 500);
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log(Input.mousePosition);
-            Debug.Log(Screen.height);
-            Debug.Log(Screen.width);
-        }
         Cursor.lockState = CursorLockMode.Locked;
-
     }
 
     void OnCollisionEnter(Collision col)
