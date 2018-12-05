@@ -4,8 +4,8 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 
 public class Controller : MonoBehaviour {
-    [DllImport("user32")] // 使用 user32.dll ，這是系統的 Dll 檔，所以Unity會自動匯入，不用再手動加入 dll 檔
-    static extern bool SetCursorPos(int X, int Y);
+    //[DllImport("user32")] // 使用 user32.dll ，這是系統的 Dll 檔，所以Unity會自動匯入，不用再手動加入 dll 檔
+    //static extern bool SetCursorPos(int X, int Y);
 
     public float speed, jump, sensitivity;
     private bool onGround = false;
@@ -14,13 +14,11 @@ public class Controller : MonoBehaviour {
     void Start () {
         Quaternion init_angle = Quaternion.identity;
         init_angle.eulerAngles = new Vector3(1, 0, 0);
-        transform.GetChild(0).rotation = init_angle; 
-        //Cursor.visible = false;
+        transform.GetChild(0).rotation = init_angle;
     }
 
 	// Update is called once per frame
 	void Update () {
-
         //character moving + jumping//
         if (Input.GetKey(KeyCode.W))
         {
@@ -50,7 +48,15 @@ public class Controller : MonoBehaviour {
         if (max >= 270 || max <= 90)
             transform.GetChild(0).Rotate(new Vector3(-Input.GetAxis("Mouse Y") * sensitivity, 0, 0) * Time.deltaTime);
 
-       //SetCursorPos(Screen.height, Screen.width);
+        //SetCursorPos(500, 500);
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log(Input.mousePosition);
+            Debug.Log(Screen.height);
+            Debug.Log(Screen.width);
+        }
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     void OnCollisionEnter(Collision col)
@@ -58,5 +64,7 @@ public class Controller : MonoBehaviour {
         if (col.gameObject.tag == "Ground" || (col.gameObject.tag == "Block" && col.gameObject.transform.position.y + col.gameObject.transform.localScale.y / 2 < gameObject.transform.position.y))
             onGround = true;
     }
+
+
 
 }
