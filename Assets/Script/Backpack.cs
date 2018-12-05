@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Backpack : MonoBehaviour {
 
@@ -32,11 +33,18 @@ public class Backpack : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        itembox_image.GetComponent<Transform>().GetChild(1).transform.position = itembox_image.GetComponent<Transform>().GetChild(0).transform.position - 4 * select_frame_pos;
+        itembox_image.GetComponent<Transform>().GetChild(1).transform.position = itembox_image.GetComponent<Transform>().GetChild(0).transform.position - 4 * select_frame_pos;   
+        for (int i = 0; i < 9; i++)
+            itembox_image.GetComponent<Transform>().GetChild(2).GetChild(i).GetComponent<Text>().text = "";
     }
 
     // Update is called once per frame
     void Update () {
+
+        for(int i = 0; i < itembox_lite.Count; i++)
+            itembox_image.GetComponent<Transform>().GetChild(2).GetChild(i).GetComponent<Text>().text = material_num[itembox_lite[i]].ToString();
+        for (int i = itembox_lite.Count; i < 9; i++)
+            itembox_image.GetComponent<Transform>().GetChild(2).GetChild(i).GetComponent<Text>().text = "";
 
         //select itembox//
         if (Input.GetKey(KeyCode.Alpha1))
@@ -111,7 +119,10 @@ public class Backpack : MonoBehaviour {
                 if (rch.collider.gameObject.tag == "Ground")
                 {
                     GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
-                    block.transform.position = rch.point + new Vector3(0, block.transform.localScale.y / 2, 0);
+                    float PosX = Mathf.Floor(rch.point.x) + block.transform.localScale.x / 2;
+                    float PosY = rch.point.y + block.transform.localScale.y / 2;
+                    float PosZ = Mathf.Floor(rch.point.z) + block.transform.localScale.z / 2;
+                    block.transform.position = new Vector3(PosX, PosY, PosZ);
                 }
                 else if(rch.collider.gameObject.tag == "Block")
                 {
@@ -130,10 +141,16 @@ public class Backpack : MonoBehaviour {
                         block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, 0, block.transform.lossyScale.z);
                 }
                 if (--material_num[itembox_lite[selector]] <= 0)
+                {
                     itembox_lite.RemoveAt(selector);
+                    if (selector > 0)
+                    {
+                        selector = itembox_lite.Count - 1;
+                        itembox_image.GetComponent<Transform>().GetChild(1).transform.position = itembox_image.GetComponent<Transform>().GetChild(0).transform.position + (selector - 4) * select_frame_pos;
+                    }
+                }
             }
         }
-
-
     }
+
 }

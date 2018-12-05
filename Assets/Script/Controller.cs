@@ -4,8 +4,6 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 
 public class Controller : MonoBehaviour {
-    //[DllImport("user32")] // 使用 user32.dll ，這是系統的 Dll 檔，所以Unity會自動匯入，不用再手動加入 dll 檔
-    //static extern bool SetCursorPos(int X, int Y);
 
     public float speed, jump, sensitivity;
     private bool onGround = false;
@@ -19,6 +17,7 @@ public class Controller : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        Cursor.lockState = CursorLockMode.None;
         //character moving + jumping//
         if (Input.GetKey(KeyCode.W))
         {
@@ -56,7 +55,7 @@ public class Controller : MonoBehaviour {
             Debug.Log(Screen.width);
         }
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.lockState = CursorLockMode.None;
+
     }
 
     void OnCollisionEnter(Collision col)
