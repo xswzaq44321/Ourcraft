@@ -329,7 +329,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -348.5, y: -299}
+  m_AnchoredPosition: {x: -348.5, y: -336}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &598933768
@@ -746,7 +746,6 @@ MonoBehaviour:
   speed: 6
   jump: 300
   sensitivity: 100
-  itembox: {fileID: 681191398}
 --- !u!54 &1449857183
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -778,6 +777,18 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400112, guid: 865d695816206f84eb3d89272878bfe7, type: 3}
   m_PrefabInternal: {fileID: 1516487658}
+--- !u!114 &1449857187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1449857181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28bcd7995ce7654489aab9222073825d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itembox_image: {fileID: 681191398}
 --- !u!1001 &1516487658
 Prefab:
   m_ObjectHideFlags: 0
@@ -938,7 +949,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -37, y: -301}
+  m_AnchoredPosition: {x: -37, y: -336}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1933806384
