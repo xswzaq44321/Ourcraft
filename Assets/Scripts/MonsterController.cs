@@ -44,5 +44,6 @@ public class MonsterController : MonoBehaviour {
 			HP = MAX_HP;
 		else if (HP < 0)
 			Destroy(this);
+		GetComponent<Rigidbody>().AddForce((Vector3.back + Vector3.up)*200);
 	}
 }
