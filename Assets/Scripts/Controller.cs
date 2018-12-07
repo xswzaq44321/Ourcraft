@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Controller : MonoBehaviour {
 
     public float speed, jump, sensitivity;
-    public int MAX_HP;
+    public readonly int MAX_HP = 20;
     public GameObject health_bar;
     private int HP = 0;
     private bool onGround = false;
@@ -82,7 +82,7 @@ public class Controller : MonoBehaviour {
             health_bar.GetComponent<Transform>().GetChild(i).GetComponent<RawImage>().texture = Resources.Load("icon/half_heart") as Texture;
             i++;
         }
-        for(; i < MAX_HP; i++)
+        for(; i < MAX_HP / 2; i++)
             health_bar.GetComponent<Transform>().GetChild(i).GetComponent<RawImage>().texture = Resources.Load("icon/hollow_heart") as Texture;
     }
 

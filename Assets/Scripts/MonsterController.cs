@@ -21,6 +21,14 @@ public class MonsterController : MonoBehaviour {
 		chase();
 	}
 
+	private void OnCollisionEnter(Collision collision)
+	{
+		if(collision.gameObject.name == "player")
+		{
+			collision.gameObject.GetComponent<Controller>().Add_HP(-1);
+		}
+	}
+
 	void chase()
 	{
 		Vector3 endPoint = player.transform.position;
