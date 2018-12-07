@@ -189,6 +189,8 @@ GameObject:
   m_Component:
   - component: {fileID: 75336921}
   - component: {fileID: 75336922}
+  - component: {fileID: 75336923}
+  - component: {fileID: 75336924}
   m_Layer: 0
   m_Name: RandomMapGenerator
   m_TagString: Untagged
@@ -221,6 +223,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainLand: {fileID: 555320273}
+--- !u!114 &75336923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 75336920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181f1d0e98daaf44aab8dd7bfb97143c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainLand: {fileID: 555320273}
+  rangeX: {x: -50, y: 50}
+  rangeZ: {x: -50, y: 50}
+  rangeHeight: {x: 5, y: 40}
+--- !u!114 &75336924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 75336920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a32035fa483e643bc84702a3fabcdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainLand: {fileID: 555320273}
+  grass: 0
+  sand: 0
+  dirt: 0
+  stone: 0
+  rangeX: {x: 100, y: 130}
+  rangeZ: {x: 100, y: 130}
 --- !u!1 &91209857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1736,7 +1771,7 @@ MonoBehaviour:
   speed: 3
   jump: 300
   sensitivity: 100
-  HP: 0
+  MAX_HP: 0
   health_bar: {fileID: 640522259}
 --- !u!54 &1449857183
 Rigidbody:
