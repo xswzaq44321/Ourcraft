@@ -15,7 +15,7 @@ public class Ground : MonoBehaviour {
         if (sand) material.Add("sand");
         if (dirt) material.Add("dirt");
         if (stone) material.Add("stone");
-        for(float i = rangeX.x + 0.5f; i < rangeX.y; i++)
+        for(float i = rangeX.x + 0.5f; material.Count > 0 &&  i < rangeX.y; i++)
             for (float j = rangeZ.x + 0.5f; j < rangeZ.y; j++)
             {
                 GameObject block = Instantiate(Resources.Load("blocks/" + material[Random.Range(0, material.Count - 1)]) as GameObject);
