@@ -85,7 +85,7 @@ public class Controller : MonoBehaviour {
         for(; i < MAX_HP / 2; i++)
             health_bar.GetComponent<Transform>().GetChild(i).GetComponent<RawImage>().texture = Resources.Load("icon/hollow_heart") as Texture;
 		if(delataHP < 0)
-			GetComponent<Rigidbody>().AddForce((Vector3.back + Vector3.up)*200);
+			GetComponent<Rigidbody>().AddForce((-transform.forward + transform.up)*200);
 	}
 
 }

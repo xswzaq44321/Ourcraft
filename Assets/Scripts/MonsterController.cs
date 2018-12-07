@@ -32,7 +32,9 @@ public class MonsterController : MonoBehaviour {
 	void chase()
 	{
 		Vector3 endPoint = player.transform.position;
-		GetComponent<Rigidbody>().velocity = (endPoint - transform.position).normalized * speed;
+		var bar = (endPoint - transform.position).normalized;
+		bar.y = 0;
+		GetComponent<Rigidbody>().velocity = bar * speed;
 		an.SetFloat("speed", speed);
 		transform.forward = (endPoint - transform.position);
 	}
@@ -44,6 +46,6 @@ public class MonsterController : MonoBehaviour {
 			HP = MAX_HP;
 		else if (HP < 0)
 			Destroy(this);
-		GetComponent<Rigidbody>().AddForce((Vector3.back + Vector3.up)*200);
+		GetComponent<Rigidbody>().AddForce((-transform.forward + transform.up)*200);
 	}
 }
