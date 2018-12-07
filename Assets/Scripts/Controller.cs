@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Runtime.InteropServices;
+using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour {
 
@@ -18,6 +18,10 @@ public class Controller : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Cursor.lockState = CursorLockMode.None;
+
+        //to menu//
+        if (Input.GetKey(KeyCode.Escape)) SceneManager.LoadScene(0);
+
         //character moving + jumping//
         if (Input.GetKey(KeyCode.W))
         {

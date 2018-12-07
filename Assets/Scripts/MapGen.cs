@@ -8,6 +8,7 @@ public class MapGen : MonoBehaviour {
     private string[] material = new string[] { "grass", "sand", "dirt", "stone", "log_oak"};
 	// Use this for initialization
 	void Start () {
+        // forest
         for (float i = 0; i < 100; i++)
         {
             float PosX = Random.Range(-50, 50) + 0.5f, PosY = Random.Range(-50, 50) + 0.5f;

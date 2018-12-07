@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Backpack : MonoBehaviour {
 
+    public bool infinite_block, show_gameinfo;
+    public float touchable_distance;
     public Canvas itembox_image;
     private Vector3 select_frame_pos = new Vector3(77.875f, 0, 0);
     int selector = 0;
@@ -41,7 +43,16 @@ public class Backpack : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        for(int i = 0; i < itembox_lite.Count; i++)
+        if (show_gameinfo)
+            itembox_image.GetComponent<Transform>().GetChild(4).GetChild(0).GetComponent<Text>().text = "Player Position: " + transform.position.ToString();
+        else
+        {
+            itembox_image.GetComponent<Transform>().GetChild(4).GetChild(0).GetComponent<Text>().text = "";
+            itembox_image.GetComponent<Transform>().GetChild(4).GetChild(1).GetComponent<Text>().text = "";
+        }
+
+        //update itembox information//
+        for (int i = 0; i < itembox_lite.Count; i++)
             itembox_image.GetComponent<Transform>().GetChild(2).GetChild(i).GetComponent<Text>().text = material_num[itembox_lite[i]].ToString();
         for (int i = itembox_lite.Count; i < 9; i++)
             itembox_image.GetComponent<Transform>().GetChild(2).GetChild(i).GetComponent<Text>().text = "";
@@ -99,7 +110,8 @@ public class Backpack : MonoBehaviour {
             Ray ra = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit rch;
             if (Physics.Raycast(ra, out rch))
-                if (rch.collider.gameObject.tag == "Block")
+            {
+                if (rch.collider.gameObject.tag == "Block" && Vector3.Distance(rch.point, transform.position) <= touchable_distance)
                 {
                     string[] separator = { "(", " (" };
                     string item = rch.collider.gameObject.name.Split(separator, System.StringSplitOptions.RemoveEmptyEntries)[0];
@@ -107,6 +119,10 @@ public class Backpack : MonoBehaviour {
                     material_num[item]++;
                     Destroy(rch.transform.gameObject);
                 }
+
+                if (show_gameinfo)
+                    itembox_image.GetComponent<Transform>().GetChild(4).GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
+            }
         }
 
         //put blocks//
@@ -116,39 +132,38 @@ public class Backpack : MonoBehaviour {
             RaycastHit rch;
             if (Physics.Raycast(ra, out rch))
             {
-                if (rch.collider.gameObject.tag == "Ground")
+                if(Vector3.Distance(rch.point, transform.position) <= touchable_distance)
                 {
-                    GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
-                    float PosX = Mathf.Floor(rch.point.x) + block.transform.localScale.x / 2;
-                    float PosY = rch.point.y + block.transform.localScale.y / 2;
-                    float PosZ = Mathf.Floor(rch.point.z) + block.transform.localScale.z / 2;
-                    block.transform.position = new Vector3(PosX, PosY, PosZ);
-                }
-                else if(rch.collider.gameObject.tag == "Block")
-                {
-                    GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
-                    if (rch.collider.gameObject.transform.position.x - rch.point.x == block.transform.lossyScale.x / 2)
-                        block.transform.position = rch.collider.gameObject.transform.position - new Vector3(block.transform.lossyScale.x, 0, 0);
-                    else if (rch.collider.gameObject.transform.position.x - rch.point.x == -block.transform.lossyScale.x / 2)
-                        block.transform.position = rch.collider.gameObject.transform.position + new Vector3(block.transform.lossyScale.x, 0, 0);
-                    else if (rch.collider.gameObject.transform.position.y - rch.point.y == block.transform.lossyScale.y / 2)
-                        block.transform.position = rch.collider.gameObject.transform.position - new Vector3(0, block.transform.lossyScale.y, 0);
-                    else if (rch.collider.gameObject.transform.position.y - rch.point.y == -block.transform.lossyScale.y / 2)
-                        block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, block.transform.lossyScale.y, 0);
-                    else if (rch.collider.gameObject.transform.position.z - rch.point.z == block.transform.lossyScale.z / 2)
-                        block.transform.position = rch.collider.gameObject.transform.position - new Vector3(0, 0, block.transform.lossyScale.z);
-                    else if (rch.collider.gameObject.transform.position.z - rch.point.z == -block.transform.lossyScale.z / 2)
-                        block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, 0, block.transform.lossyScale.z);
-                }
-                if (--material_num[itembox_lite[selector]] <= 0)
-                {
-                    itembox_lite.RemoveAt(selector);
-                    if (selector > 0)
+                    if (rch.collider.gameObject.tag == "Ground")
                     {
-                        selector = itembox_lite.Count - 1;
-                        itembox_image.GetComponent<Transform>().GetChild(1).transform.position = itembox_image.GetComponent<Transform>().GetChild(0).transform.position + (selector - 4) * select_frame_pos;
+                        GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
+                        float PosX = Mathf.Floor(rch.point.x) + block.transform.localScale.x / 2;
+                        float PosY = rch.point.y + block.transform.localScale.y / 2;
+                        float PosZ = Mathf.Floor(rch.point.z) + block.transform.localScale.z / 2;
+                        block.transform.position = new Vector3(PosX, PosY, PosZ);
                     }
+                    else if (rch.collider.gameObject.tag == "Block")
+                    {
+                        GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
+                        if (rch.collider.gameObject.transform.position.x - rch.point.x == block.transform.localScale.x / 2)
+                            block.transform.position = rch.collider.gameObject.transform.position - new Vector3(block.transform.localScale.x, 0, 0);
+                        else if (rch.collider.gameObject.transform.position.x - rch.point.x == -block.transform.localScale.x / 2)
+                            block.transform.position = rch.collider.gameObject.transform.position + new Vector3(block.transform.localScale.x, 0, 0);
+                        else if (Mathf.Abs(rch.collider.gameObject.transform.position.y - rch.point.y - block.transform.localScale.y / 2) < 0.01f)
+                            block.transform.position = rch.collider.gameObject.transform.position - new Vector3(0, block.transform.localScale.y, 0);
+                        else if (Mathf.Abs(rch.collider.gameObject.transform.position.y - rch.point.y + block.transform.localScale.y / 2) < 0.01f)
+                            block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, block.transform.localScale.y, 0);
+                        else if (rch.collider.gameObject.transform.position.z - rch.point.z == block.transform.localScale.z / 2)
+                            block.transform.position = rch.collider.gameObject.transform.position - new Vector3(0, 0, block.transform.localScale.z);
+                        else if (rch.collider.gameObject.transform.position.z - rch.point.z == -block.transform.localScale.z / 2)
+                            block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, 0, block.transform.localScale.z);
+                    }
+                    if (--material_num[itembox_lite[selector]] <= 0 && !infinite_block)
+                        itembox_lite.RemoveAt(selector);
                 }
+
+                if (show_gameinfo)
+                    itembox_image.GetComponent<Transform>().GetChild(4).GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
             }
         }
     }
