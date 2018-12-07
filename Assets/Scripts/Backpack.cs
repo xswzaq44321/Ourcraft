@@ -8,6 +8,8 @@ public class Backpack : MonoBehaviour {
     public bool infinite_block, show_gameinfo;
     public float touchable_distance;
     public Canvas itembox_image;
+    public GameObject item_number_ui;
+    public GameObject game_info_ui;
     private Vector3 select_frame_pos = new Vector3(77.875f, 0, 0);
     int selector = 0;
     List<string> itembox_lite = new List<string>();
@@ -37,25 +39,25 @@ public class Backpack : MonoBehaviour {
     void Start () {
         itembox_image.GetComponent<Transform>().GetChild(1).transform.position = itembox_image.GetComponent<Transform>().GetChild(0).transform.position - 4 * select_frame_pos;   
         for (int i = 0; i < 9; i++)
-            itembox_image.GetComponent<Transform>().GetChild(2).GetChild(i).GetComponent<Text>().text = "";
+            item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = "";
     }
 
     // Update is called once per frame
     void Update () {
 
         if (show_gameinfo)
-            itembox_image.GetComponent<Transform>().GetChild(4).GetChild(0).GetComponent<Text>().text = "Player Position: " + transform.position.ToString();
+            game_info_ui.GetComponent<Transform>().GetChild(0).GetComponent<Text>().text = "Player Position: " + transform.position.ToString();
         else
         {
-            itembox_image.GetComponent<Transform>().GetChild(4).GetChild(0).GetComponent<Text>().text = "";
-            itembox_image.GetComponent<Transform>().GetChild(4).GetChild(1).GetComponent<Text>().text = "";
+            game_info_ui.GetComponent<Transform>().GetChild(0).GetComponent<Text>().text = "";
+            game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "";
         }
 
         //update itembox information//
         for (int i = 0; i < itembox_lite.Count; i++)
-            itembox_image.GetComponent<Transform>().GetChild(2).GetChild(i).GetComponent<Text>().text = material_num[itembox_lite[i]].ToString();
+            item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = material_num[itembox_lite[i]].ToString();
         for (int i = itembox_lite.Count; i < 9; i++)
-            itembox_image.GetComponent<Transform>().GetChild(2).GetChild(i).GetComponent<Text>().text = "";
+            item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = "";
 
         //select itembox//
         if (Input.GetKey(KeyCode.Alpha1))
@@ -121,7 +123,7 @@ public class Backpack : MonoBehaviour {
                 }
 
                 if (show_gameinfo)
-                    itembox_image.GetComponent<Transform>().GetChild(4).GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
+                    game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
             }
         }
 
@@ -163,7 +165,7 @@ public class Backpack : MonoBehaviour {
                 }
 
                 if (show_gameinfo)
-                    itembox_image.GetComponent<Transform>().GetChild(4).GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
+                    game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
             }
         }
     }
