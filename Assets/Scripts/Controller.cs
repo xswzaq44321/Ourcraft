@@ -8,9 +8,10 @@ public class Controller : MonoBehaviour {
 
     public float speed, jump, sensitivity;
     public int MAX_HP;
+    public GameObject health_bar;
     private int HP = 0;
     private bool onGround = false;
-    public GameObject health_bar;
+	private Animator an;
 
     // Use this for initialization
     void Start () {
@@ -18,29 +19,33 @@ public class Controller : MonoBehaviour {
         init_angle.eulerAngles = new Vector3(1, 0, 0);
         transform.GetChild(0).rotation = init_angle;
         Add_HP(MAX_HP);
+		an = GetComponent<Animator>();
     }
 
 	// Update is called once per frame
 	void Update () {
         Cursor.lockState = CursorLockMode.None;
 
-        //to menu//
-        //if (Input.GetKey(KeyCode.Escape)) SceneManager.LoadScene(0);
+		//to menu//
+		//if (Input.GetKey(KeyCode.Escape)) SceneManager.LoadScene(0);
 
-        //character moving + jumping//
+		//character moving + jumping//
+		an.SetFloat("speed", 0);
         if (Input.GetKey(KeyCode.W))
         {
             transform.localPosition += speed * transform.forward * Time.deltaTime;
+			an.SetFloat("speed", speed);
         }
         if (Input.GetKey(KeyCode.A))
         {
             transform.localPosition -= speed * transform.right * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.S))
+		}
+		if (Input.GetKey(KeyCode.S))
         {
             transform.localPosition -= speed * transform.forward * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D))
+			an.SetFloat("speed", -speed);
+		}
+		if (Input.GetKey(KeyCode.D))
         {
             transform.localPosition += speed * transform.right * Time.deltaTime;
         }
