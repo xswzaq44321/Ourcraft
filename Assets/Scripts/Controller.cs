@@ -35,7 +35,7 @@ public class Controller : MonoBehaviour {
         {
             transform.localPosition += speed * transform.right * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.Space) )//&& onGround)
+        if (Input.GetKey(KeyCode.Space) && onGround)
         {
             GetComponent<Rigidbody>().AddForce(Vector3.up * jump);
             onGround = false;
