@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Controller : MonoBehaviour {
 
     public float speed, jump, sensitivity;
+    public int MAX_HP;
+    private int HP = 0;
     private bool onGround = false;
+    public GameObject health_bar;
 
     // Use this for initialization
     void Start () {
         Quaternion init_angle = Quaternion.identity;
         init_angle.eulerAngles = new Vector3(1, 0, 0);
         transform.GetChild(0).rotation = init_angle;
+        Add_HP(MAX_HP);
     }
 
 	// Update is called once per frame
@@ -20,7 +25,7 @@ public class Controller : MonoBehaviour {
         Cursor.lockState = CursorLockMode.None;
 
         //to menu//
-        if (Input.GetKey(KeyCode.Escape)) SceneManager.LoadScene(0);
+        //if (Input.GetKey(KeyCode.Escape)) SceneManager.LoadScene(0);
 
         //character moving + jumping//
         if (Input.GetKey(KeyCode.W))
@@ -60,6 +65,20 @@ public class Controller : MonoBehaviour {
             onGround = true;
     }
 
-
+    public void Add_HP(int delataHP)
+    {
+        HP += delataHP;
+        if (HP > MAX_HP) HP = MAX_HP;
+        int i;
+        for (i = 0; i < HP / 2; i++)
+            health_bar.GetComponent<Transform>().GetChild(i).GetComponent<RawImage>().texture = Resources.Load("icon/heart") as Texture;
+        if(HP % 2 == 1)
+        {
+            health_bar.GetComponent<Transform>().GetChild(i).GetComponent<RawImage>().texture = Resources.Load("icon/half_heart") as Texture;
+            i++;
+        }
+        for(; i < MAX_HP; i++)
+            health_bar.GetComponent<Transform>().GetChild(i).GetComponent<RawImage>().texture = Resources.Load("icon/hollow_heart") as Texture;
+    }
 
 }
