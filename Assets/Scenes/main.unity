@@ -1085,7 +1085,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 681191395}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 697, y: 414.5, z: 0}
+  m_LocalPosition: {x: 661, y: 357.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1933806383}
@@ -2763,8 +2763,8 @@ MonoBehaviour:
   player: {fileID: 1449857181}
   sun: {fileID: 855311117}
   monster: {fileID: 1482075084041744, guid: afd880ba4894ba145a9a19efc3c7fbad, type: 2}
-  minRange: 0
-  maxRange: 0
+  minRange: 10
+  maxRange: 20
   MainLand: {fileID: 555320273}
 --- !u!1 &2045018163
 GameObject:
