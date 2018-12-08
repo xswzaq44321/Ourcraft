@@ -43,7 +43,6 @@ public class MonsterController : MonoBehaviour {
 
 	public void addHP(int deltaHP)
 	{
-		Debug.Log(HP);
 		HP += deltaHP;
         if (HP > MAX_HP)
             HP = MAX_HP;
