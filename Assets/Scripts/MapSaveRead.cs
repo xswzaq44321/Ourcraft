@@ -23,6 +23,7 @@ public class MapSaveRead : MonoBehaviour {
 	{
 		map = new Map();
 		map.openMap(path);
+		// load map blocks
 		var blocks = map.blocks;
 		string[] separator = { "(", " (" };
 		foreach (var block in blocks)
@@ -31,8 +32,11 @@ public class MapSaveRead : MonoBehaviour {
 			GameObject forest = Instantiate(Resources.Load(string.Format("blocks/{0}", item)) as GameObject);
 			forest.transform.position = new Vector3(block.X, block.Y, block.Z);
 		}
+		// load player informations
 		var player = GameObject.Find("player");
 		player.transform.position = new Vector3(map.player.X, map.player.Y, map.player.Z);
+		player.GetComponent<Controller>().set_HP(map.player.HP);
+		player.GetComponent<Backpack>().load_backpack(map.player.backpack);
 	}
 	void saveMap(string path)
 	{
@@ -49,10 +53,8 @@ public class MapSaveRead : MonoBehaviour {
 		map.player.X = player.transform.position.x;
 		map.player.Y = player.transform.position.y;
 		map.player.Z = player.transform.position.z;
-		/* waiting to implementing
-		map.player.HP = player.GetComponent<Controller>().HP;
-		map.player.backpack = player.GetComponent<Backpack>().getBackpack();
-		*/
+		map.player.HP = player.GetComponent<Controller>().get_HP();
+		map.player.backpack = player.GetComponent<Backpack>().save_backpack().ConvertAll(s => string.Copy(s));
 
 		map.saveMap(path);
 	}
