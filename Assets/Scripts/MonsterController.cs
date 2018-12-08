@@ -7,7 +7,7 @@ public class MonsterController : MonoBehaviour {
 	public GameObject player;
 	public float speed;
 	private Animator an;
-	private int MAX_HP;
+	public int MAX_HP;
 	private int HP;
 
 	// Use this for initialization
@@ -42,10 +42,10 @@ public class MonsterController : MonoBehaviour {
 	public void addHP(int deltaHP)
 	{
 		HP += deltaHP;
-		if (HP > MAX_HP)
-			HP = MAX_HP;
-		else if (HP < 0)
-			Destroy(this);
+        if (HP > MAX_HP)
+            HP = MAX_HP;
+        else if (HP < 0)
+            Destroy(this);
 		GetComponent<Rigidbody>().AddForce((-transform.forward + transform.up)*200);
 	}
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Controller : MonoBehaviour {
 
-    public float speed, jump, sensitivity;
+    public float speed, jump, sensitivity, atk_range;
     public readonly int MAX_HP = 20;
     public GameObject health_bar;
     private int HP = 0;
@@ -60,6 +60,16 @@ public class Controller : MonoBehaviour {
         float max = transform.GetChild(0).eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
         if (max >= 270 || max <= 90)
             transform.GetChild(0).Rotate(new Vector3(-Input.GetAxis("Mouse Y") * sensitivity, 0, 0) * Time.deltaTime);
+
+        //attack monster//
+       if (Input.GetMouseButtonDown(0))
+       {
+           Ray ra = Camera.main.ScreenPointToRay(Input.mousePosition);
+           RaycastHit rch;
+           if (Physics.Raycast(ra, out rch) && rch.collider.gameObject.tag == "Monster"
+               && Vector3.Distance(rch.point, transform.position) <= atk_range)
+                    rch.collider.gameObject.GetComponent<MonsterController>().addHP(-1);
+       }
 
         Cursor.lockState = CursorLockMode.Locked;
     }
