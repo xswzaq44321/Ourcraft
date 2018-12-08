@@ -8,7 +8,6 @@ public class MapSaveRead : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		map = new Map();
 		//map.openMap(@"d:\documents\123.json");
 	}
 	
@@ -19,8 +18,10 @@ public class MapSaveRead : MonoBehaviour {
 	public bool flag = true;
 	private Map map;
 
+	// instantiate all objects
 	void loadMap(string path)
 	{
+		map = new Map();
 		map.openMap(path);
 		var blocks = map.blocks;
 		string[] separator = { "(", " (" };
@@ -30,15 +31,29 @@ public class MapSaveRead : MonoBehaviour {
 			GameObject forest = Instantiate(Resources.Load(string.Format("blocks/{0}", item)) as GameObject);
 			forest.transform.position = new Vector3(block.X, block.Y, block.Z);
 		}
+		var player = GameObject.Find("player");
+		player.transform.position = new Vector3(map.player.X, map.player.Y, map.player.Z);
 	}
 	void saveMap(string path)
 	{
-		var bar = GameObject.FindGameObjectsWithTag("block");
-		foreach (var it in bar)
+		map = new Map();
+		// get all block's position
+		var blocks = GameObject.FindGameObjectsWithTag("block");
+		foreach (var it in blocks)
 		{
 			map.blocks.Add(new Block(it.name, it.transform.position.x, it.transform.position.y, it.transform.position.z));
 		}
-		map.count = bar.GetLength(0);
+		map.count = blocks.GetLength(0);
+		// get player informations
+		var player = GameObject.Find("player");
+		map.player.X = player.transform.position.x;
+		map.player.Y = player.transform.position.y;
+		map.player.Z = player.transform.position.z;
+		/* waiting to implementing
+		map.player.HP = player.GetComponent<Controller>().HP;
+		map.player.backpack = player.GetComponent<Backpack>().getBackpack();
+		*/
+
 		map.saveMap(path);
 	}
 }
@@ -53,7 +68,9 @@ public class Map
 
 	public int count;
 	public List<Block> blocks;
+	public Player player;
 
+	// transform map to json
 	public void saveMap(string path)
 	{
 		string json = JsonUtility.ToJson(this);
@@ -64,13 +81,23 @@ public class Map
 		sw.Close();
 		fs.Close();
 	}
+	// transform json to map
 	public void openMap(string path)
 	{
 		FileStream fs = new FileStream(path, FileMode.Open);
 		StreamReader sr = new StreamReader(fs);
 		string json = sr.ReadToEnd();
-		var bar = JsonUtility.FromJson<Map>(json);
-		this.blocks = bar.blocks.ConvertAll(block => new Block(block.name, block.X, block.Y, block.Z));
+		var oldMap = JsonUtility.FromJson<Map>(json);
+		/* transfer informations from oldMap to this */
+		// blocks
+		this.blocks = oldMap.blocks.ConvertAll(block => new Block(block.name, block.X, block.Y, block.Z));
+		// player informations
+		this.player.X = oldMap.player.X;
+		this.player.Y = oldMap.player.Y;
+		this.player.Z = oldMap.player.Z;
+		this.player.HP = oldMap.player.HP;
+		// deep copy string
+		this.player.backpack = oldMap.player.backpack.ConvertAll(s => string.Copy(s));
 
 		sr.Close();
 		fs.Close();
@@ -89,4 +116,12 @@ public class Block
 	}
 	public string name;
 	public float X, Y, Z;
+}
+
+[Serializable]
+public class Player
+{
+	public float X, Y, Z;
+	public int HP;
+	public List<string> backpack;
 }
