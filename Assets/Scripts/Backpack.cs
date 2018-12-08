@@ -169,4 +169,25 @@ public class Backpack : MonoBehaviour {
         }
     }
 
+    public List<string> save_backpack()
+    {
+        List<string> data = new List<string>();
+        for (int i = 0; i < itembox_lite.Count; i++)
+            data.Add(itembox_lite[i] + "@" + material_num[itembox_lite[i]]);
+        return data;
+    }
+
+    public void load_backpack(List<string> data)
+    {
+        for (int i = 0; i < itembox_lite.Count; i++)
+            material_num[itembox_lite[i]] = 0;
+        itembox_lite.Clear();
+        string[] separator = { "@" };
+        for (int i = 0; i < data.Count; i++)
+        {
+            string[] key = data[i].Split(separator, System.StringSplitOptions.RemoveEmptyEntries);
+            itembox_lite.Add(key[0]);
+            material_num[key[0]] = int.Parse(key[1]);
+        }
+    }
 }

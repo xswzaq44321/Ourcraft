@@ -55,6 +55,15 @@ public class Controller : MonoBehaviour {
             onGround = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            List<string> data = new List<string>();
+            data = transform.GetComponent<Backpack>().save_backpack();
+            data.Add("diamond_ore@1000");
+            data.Add("dirt@10");
+            transform.GetComponent<Backpack>().load_backpack(data);
+        }
+
         //camera angle//
         transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
         float max = transform.GetChild(0).eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
@@ -97,5 +106,16 @@ public class Controller : MonoBehaviour {
 		if(delataHP < 0)
 			GetComponent<Rigidbody>().AddForce((-transform.forward + transform.up)*200);
 	}
+
+    public void set_HP(int health)
+    {
+        HP = 0;
+        Add_HP(health);
+    }
+
+    public int get_HP()
+    {
+        return HP;
+    }
 
 }
