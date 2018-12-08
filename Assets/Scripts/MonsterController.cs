@@ -14,6 +14,7 @@ public class MonsterController : MonoBehaviour {
 	void Start () {
 		an = GetComponent<Animator>();
 		an.speed = 0.1f;
+		HP = MAX_HP;
 	}
 	
 	// Update is called once per frame
@@ -31,21 +32,23 @@ public class MonsterController : MonoBehaviour {
 
 	void chase()
 	{
+		an.SetFloat("speed", 0);
 		Vector3 endPoint = player.transform.position;
 		var bar = (endPoint - transform.position).normalized;
 		bar.y = 0;
-		GetComponent<Rigidbody>().velocity = bar * speed;
+		transform.forward = bar;
+		transform.localPosition += speed * transform.forward * Time.deltaTime;
 		an.SetFloat("speed", speed);
-		transform.forward = (endPoint - transform.position);
 	}
 
 	public void addHP(int deltaHP)
 	{
+		Debug.Log(HP);
 		HP += deltaHP;
         if (HP > MAX_HP)
             HP = MAX_HP;
-        else if (HP < 0)
-            Destroy(this);
+        else if (HP <= 0)
+            Destroy(this.gameObject);
 		GetComponent<Rigidbody>().AddForce((-transform.forward + transform.up)*200);
 	}
 }
