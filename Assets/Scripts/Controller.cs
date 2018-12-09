@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
-
 	public float speed, jump, sensitivity, atk_range;
 	public readonly int MAX_HP = 20;
 	public GameObject health_bar;
