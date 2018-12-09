@@ -61,15 +61,6 @@ public class Controller : MonoBehaviour
 			onGround = false;
 		}
 
-		if (Input.GetKeyDown(KeyCode.B))
-		{
-			List<string> data = new List<string>();
-			data = transform.GetComponent<Backpack>().save_backpack();
-			data.Add("diamond_ore@1000");
-			data.Add("dirt@10");
-			transform.GetComponent<Backpack>().load_backpack(data);
-		}
-
 		//camera angle//
 		transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
 		float max = transform.GetChild(0).eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
