@@ -32,6 +32,12 @@ public class time : MonoBehaviour {
         transform.rotation = angle;
     }
 
+	// return time for saving purposes
+	public float get_time()
+	{
+		return world_time;
+	}
+
     //maxtime = world_day
     static public float add(float timeA, float timeB)
     {

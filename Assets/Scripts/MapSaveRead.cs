@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEditor;
 
 public class MapSaveRead : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		loadMap(@"d:\documents\123.json");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.M))
 		{
-			saveMap(@"d:\documents\123.json");
+			saveMap("map1.json");
+		}
+		if (Input.GetKeyDown(KeyCode.L))
+		{
+			var blocks = GameObject.FindGameObjectsWithTag("Block");
+			for(int i = 0; i < blocks.Length; ++i)
+			{
+				Destroy(blocks[i]);
+			}
+			loadMap("map1.json");
 		}
 	}
 
@@ -23,10 +32,10 @@ public class MapSaveRead : MonoBehaviour {
 	private Map map;
 
 	// instantiate all objects
-	void loadMap(string path)
+	void loadMap(string fileName)
 	{
 		map = new Map();
-		map.openJson(path);
+		map.openJson(fileName);
 		// load map blocks
 		var blocks = map.blocks;
 		string[] separator = { "(", " (" };
@@ -38,12 +47,14 @@ public class MapSaveRead : MonoBehaviour {
 		}
 		// load player informations
 		var player = GameObject.Find("player");
-		player.transform.position = new Vector3(map.player.X, map.player.Y, map.player.Z);
+		player.transform.position = new Vector3(map.player.pos.X, map.player.pos.Y, map.player.pos.Z);
 		player.GetComponent<Controller>().set_HP(map.player.HP);
 		player.GetComponent<Backpack>().load_backpack(map.player.backpack);
+		// load time
+		GameObject.Find("World").GetComponent<time>().set_time(map.time);
 	}
 	// save blocks & player informations
-	void saveMap(string path)
+	void saveMap(string fileName)
 	{
 		map = new Map();
 		// get all block's position
@@ -55,13 +66,15 @@ public class MapSaveRead : MonoBehaviour {
 		map.count = blocks.GetLength(0);
 		// get player informations
 		var player = GameObject.FindGameObjectWithTag("Player");
-		map.player.X = player.transform.position.x;
-		map.player.Y = player.transform.position.y;
-		map.player.Z = player.transform.position.z;
+		map.player.pos.X = player.transform.position.x;
+		map.player.pos.Y = player.transform.position.y;
+		map.player.pos.Z = player.transform.position.z;
 		map.player.HP = player.GetComponent<Controller>().get_HP();
 		map.player.backpack = player.GetComponent<Backpack>().save_backpack().ConvertAll(s => string.Copy(s));
+		// get world time
+		map.time = GameObject.Find("World").GetComponent<time>().get_time();
 
-		map.saveToJson(path);
+		map.saveToJson(fileName);
 	}
 }
 
@@ -77,22 +90,24 @@ public class Map
 	public int count;
 	public List<Block> blocks;
 	public Player player;
+	public float time;
 
 	// transform map to json
-	public void saveToJson(string path)
+	public void saveToJson(string fileName)
 	{
 		string json = JsonUtility.ToJson(this);
-		FileStream fs = new FileStream(path, FileMode.Create);
+		FileStream fs = new FileStream("Assets/Resources/Maps/" + fileName, FileMode.Create);
 		StreamWriter sw = new StreamWriter(fs);
 		sw.Write(json);
+		AssetDatabase.ImportAsset("Assets/Resources/Maps/" + fileName);
 
 		sw.Close();
 		fs.Close();
 	}
 	// transform json to map
-	public void openJson(string path)
+	public void openJson(string fileName)
 	{
-		FileStream fs = new FileStream(path, FileMode.Open);
+		FileStream fs = new FileStream("Assets/Resources/Maps/" + fileName, FileMode.Open);
 		StreamReader sr = new StreamReader(fs);
 		string json = sr.ReadToEnd();
 		var oldMap = JsonUtility.FromJson<Map>(json);
@@ -100,12 +115,9 @@ public class Map
 		// blocks
 		this.blocks = oldMap.blocks.ConvertAll(block => new Block(block.name, block.X, block.Y, block.Z));
 		// player informations
-		this.player.X = oldMap.player.X;
-		this.player.Y = oldMap.player.Y;
-		this.player.Z = oldMap.player.Z;
-		this.player.HP = oldMap.player.HP;
-		// deep copy string
-		this.player.backpack = oldMap.player.backpack.ConvertAll(s => string.Copy(s));
+		this.player = new Player(oldMap.player);
+		// time
+		this.time = oldMap.time;
 
 		sr.Close();
 		fs.Close();
@@ -129,7 +141,26 @@ public class Block
 [Serializable]
 public class Player
 {
-	public float X, Y, Z;
+
+	public Player()
+	{
+		backpack = new List<string>();
+	}
+	public Player(Player old)
+	{
+		this.pos = old.pos;
+		this.HP = old.HP;
+		// deep copy string
+		this.backpack = old.backpack.ConvertAll(s => string.Copy(s));
+	}
+
+	public Tri pos;
 	public int HP;
 	public List<string> backpack;
+}
+
+[Serializable]
+public struct Tri
+{
+	public float X, Y, Z;
 }
