@@ -9,15 +9,18 @@ public class time : MonoBehaviour {
         //set_time(24000);
 	}
 
+    public bool pause;
     public float world_time = 8000;
     public float delta_time;
     private float world_day = 24000;
 	// Update is called once per frame
 	void Update () {
-        world_time += delta_time * Time.deltaTime;
-        if (world_time >= world_day) world_time = 0;
-        set_time(world_time);
-        //transform.Rotate(new Vector3(delta_time * time_flys, 0, 0) * Time.deltaTime);
+        if (!pause)
+        {
+            world_time += delta_time * Time.deltaTime;
+            if (world_time >= world_day) world_time = 0;
+            set_time(world_time);
+        }
     }
 
     void set_time(float time)
