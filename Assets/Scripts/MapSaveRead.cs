@@ -8,11 +8,15 @@ public class MapSaveRead : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//map.openMap(@"d:\documents\123.json");
+		loadMap(@"d:\documents\123.json");
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.M))
+		{
+			saveMap(@"d:\documents\123.json");
+		}
 	}
 
 	public bool flag = true;
@@ -22,7 +26,7 @@ public class MapSaveRead : MonoBehaviour {
 	void loadMap(string path)
 	{
 		map = new Map();
-		map.openMap(path);
+		map.openJson(path);
 		// load map blocks
 		var blocks = map.blocks;
 		string[] separator = { "(", " (" };
@@ -38,25 +42,26 @@ public class MapSaveRead : MonoBehaviour {
 		player.GetComponent<Controller>().set_HP(map.player.HP);
 		player.GetComponent<Backpack>().load_backpack(map.player.backpack);
 	}
+	// save blocks & player informations
 	void saveMap(string path)
 	{
 		map = new Map();
 		// get all block's position
-		var blocks = GameObject.FindGameObjectsWithTag("block");
+		var blocks = GameObject.FindGameObjectsWithTag("Block");
 		foreach (var it in blocks)
 		{
 			map.blocks.Add(new Block(it.name, it.transform.position.x, it.transform.position.y, it.transform.position.z));
 		}
 		map.count = blocks.GetLength(0);
 		// get player informations
-		var player = GameObject.Find("player");
+		var player = GameObject.FindGameObjectWithTag("Player");
 		map.player.X = player.transform.position.x;
 		map.player.Y = player.transform.position.y;
 		map.player.Z = player.transform.position.z;
 		map.player.HP = player.GetComponent<Controller>().get_HP();
 		map.player.backpack = player.GetComponent<Backpack>().save_backpack().ConvertAll(s => string.Copy(s));
 
-		map.saveMap(path);
+		map.saveToJson(path);
 	}
 }
 
@@ -66,6 +71,7 @@ public class Map
 	public Map()
 	{
 		this.blocks = new List<Block>();
+		player = new Player();
 	}
 
 	public int count;
@@ -73,7 +79,7 @@ public class Map
 	public Player player;
 
 	// transform map to json
-	public void saveMap(string path)
+	public void saveToJson(string path)
 	{
 		string json = JsonUtility.ToJson(this);
 		FileStream fs = new FileStream(path, FileMode.Create);
@@ -84,7 +90,7 @@ public class Map
 		fs.Close();
 	}
 	// transform json to map
-	public void openMap(string path)
+	public void openJson(string path)
 	{
 		FileStream fs = new FileStream(path, FileMode.Open);
 		StreamReader sr = new StreamReader(fs);
