@@ -9,6 +9,8 @@ public class Controller : MonoBehaviour
 	public float speed, jump, sensitivity, atk_range;
 	public readonly int MAX_HP = 20;
 	public GameObject health_bar;
+	public Canvas consoleCanvas;
+	public Canvas mainCanvas;
 	private int HP = 0;
 	private bool onGround = false;
 	private Animator an;
@@ -24,10 +26,35 @@ public class Controller : MonoBehaviour
 		GetComponents<AudioSource>()[0].Stop();
 		GetComponents<AudioSource>()[1].Stop();
 		GetComponents<AudioSource>()[2].Stop();
+		consoleCanvas.enabled = false;
 	}
 
 	// Update is called once per frame
 	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.BackQuote))
+		{
+			if (consoleCanvas.enabled)
+			{
+				consoleCanvas.enabled = false;
+				mainCanvas.enabled = true;
+				consoleCanvas.GetComponent<LuaConsoleControll>().disable();
+			}
+			else
+			{
+				Cursor.lockState = CursorLockMode.None;
+				consoleCanvas.enabled = true;
+				mainCanvas.enabled = false;
+				consoleCanvas.GetComponent<LuaConsoleControll>().enable();
+			}
+		}
+		if (!consoleCanvas.enabled)
+		{
+			handleMove();
+		}
+	}
+
+	void handleMove()
 	{
 		Cursor.lockState = CursorLockMode.None;
 
