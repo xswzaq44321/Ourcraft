@@ -1,7 +1,8 @@
-# OurCraft
+﻿# OurCraft
 
 ## How to play your game
 移動: WASD
+跑步: double click W
 跳躍: Space
 移動視角: Mouse
 物品欄選擇: alpha-num
@@ -9,11 +10,14 @@
 放置物品: Right Click
 
 ## Environment
-## Windows
+Windows
 
 ## Your game
 
 ## Game design (how to design your character, monster, etc.)
+character: 就是普通的維京人，喜歡蓋房子
+monster: 殭屍化的維京人，動作緩慢，很吵
+遊戲中的一天(24000單位時間)為現實中的20分鐘，到晚上會生成怪物
 
 ## Bonus
 Chen:
@@ -21,8 +25,10 @@ Chen:
 2. 游標固定在螢幕中間以方便操作
 3. 放置方塊時排列整齊，且不會重疊
 4. 放置方塊時玩家需在放置位置一定距離內
-5. 在螢幕右上顯示玩家位置與滑鼠點選位置
+5. 在螢幕左上顯示玩家位置與滑鼠點選位置
 6. 降雨系統(陰天、降雨、降雨機率)
+7. 怪物雙聲道音效
+8. 按兩次W能跑
 
 Weber
 1. 遊戲地圖的存檔
@@ -31,5 +37,6 @@ Weber
     > timeSet(int)
     > saveMap()
     > loadMap()
+3. player與monster被攻擊時往後退
 
 ## Feedback
