@@ -13,27 +13,29 @@ public class MapSaveRead : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.M))
-		{
-			saveMap("map1.json");
-		}
-		if (Input.GetKeyDown(KeyCode.L))
-		{
-			var blocks = GameObject.FindGameObjectsWithTag("Block");
-			for(int i = 0; i < blocks.Length; ++i)
-			{
-				Destroy(blocks[i]);
-			}
-			loadMap("map1.json");
-		}
+		//if(Input.GetKeyDown(KeyCode.M))
+		//{
+		//	saveMap("map1.json");
+		//}
+		//if (Input.GetKeyDown(KeyCode.L))
+		//{
+		//	loadMap("map1.json");
+		//}
 	}
 
 	public bool flag = true;
 	private Map map;
 
 	// instantiate all objects
-	void loadMap(string fileName)
+	public void loadMap(string fileName = "map1.json")
 	{
+		// destroying old blocks
+		var oldBlocks = GameObject.FindGameObjectsWithTag("Block");
+		for (int i = 0; i < oldBlocks.Length; ++i)
+		{
+			Destroy(oldBlocks[i]);
+		}
+
 		map = new Map();
 		map.openJson(fileName);
 		// load map blocks
@@ -54,7 +56,7 @@ public class MapSaveRead : MonoBehaviour {
 		GameObject.Find("World").GetComponent<time>().set_time(map.time);
 	}
 	// save blocks & player informations
-	void saveMap(string fileName)
+	public void saveMap(string fileName = "map1.json")
 	{
 		map = new Map();
 		// get all block's position

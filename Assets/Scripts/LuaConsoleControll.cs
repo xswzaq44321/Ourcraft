@@ -10,6 +10,7 @@ public class LuaConsoleControll : MonoBehaviour
 
 	public InputField inputField;
 	public Text message;
+	public ObjectHolder objectHolder;
 	Script script;
 	List<string> prevCommands;
 	int prevCommandsIter;
@@ -22,6 +23,18 @@ public class LuaConsoleControll : MonoBehaviour
 		prevCommandsIter = 0;
 
 		script.Options.DebugPrint = s => printMessage(s);
+		script.Globals["timeSet"] = (Action<float>)((a) =>
+		{
+			objectHolder.world.GetComponent<time>().set_time(a);
+		});
+		script.Globals["saveMap"] = (Action)(() =>
+		{
+			objectHolder.saveRead.GetComponent<MapSaveRead>().saveMap();
+		});
+		script.Globals["loadMap"] = (Action)(() =>
+		{
+			objectHolder.saveRead.GetComponent<MapSaveRead>().loadMap();
+		});
 	}
 
 	// Update is called once per frainputField
