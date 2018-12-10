@@ -15,4 +15,9 @@ public class rain : MonoBehaviour {
             Destroy(this.gameObject);
 	}
 
+    void OnCollisionEnter(Collision col)
+    {
+        Destroy(this.gameObject);
+    }
+
 }

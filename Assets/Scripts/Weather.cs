@@ -14,6 +14,7 @@ public class Weather : MonoBehaviour
     void Start()
     {
         dice_rain();
+        rain_start = 8200;
     }
 
     // Update is called once per frame
@@ -58,7 +59,7 @@ public class Weather : MonoBehaviour
         if (Random.Range(0, 100) <= 100 * raining_rate)
         {
             rainfall = (uint)Random.Range(10, 40);
-            rain_start = time.add(rain_end, Random.Range(500, 23000));
+            rain_start = time.add(GetComponent<time>().world_time, Random.Range(500, 23000));
             rain_end = time.add(rain_start, Random.Range(500, 30000));
         }
     }
