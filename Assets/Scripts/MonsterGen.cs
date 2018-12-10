@@ -10,6 +10,8 @@ public class MonsterGen : MonoBehaviour
 	public GameObject monster;
 	public float minRange, maxRange;
 	public Transform MainLand;
+	public float generateInterval;
+	public int maxCount;
 	private float time;
 
 	// Use this for initialization
@@ -23,7 +25,7 @@ public class MonsterGen : MonoBehaviour
 		Vector3 dist = new Vector3(1, 0, 0);
 		Vector3 endPoint;
 		time += Time.deltaTime;
-		if (sun.transform.eulerAngles.x > 270f && time > 1f)
+		if (sun.transform.eulerAngles.x > 270f && time > 1f && this.transform.childCount <= maxCount)
 		{ // night time
 			time = 0;
 			// decide where and how far from player that the monsters'll spawn
@@ -42,9 +44,11 @@ public class MonsterGen : MonoBehaviour
 		{ // day time
 			if (this.transform.childCount > 0)
 			{
-				// destroy evil viking one by one
-				Destroy(this.transform.GetChild(0).gameObject);
-				this.transform.GetChild(0).parent = null;
+				for (int i = 0; i < 10; i++)
+				{
+					Destroy(this.transform.GetChild(0).gameObject);
+					this.transform.GetChild(0).parent = null; 
+				}
 			}
 		}
 	}

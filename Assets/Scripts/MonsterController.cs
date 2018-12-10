@@ -15,7 +15,7 @@ public class MonsterController : MonoBehaviour {
     void Start () {
         arrr = GetComponents<AudioSource>()[1];
         an = GetComponent<Animator>();
-		an.speed = 0.1f;
+		an.speed = 1/3f * speed;
 		HP = MAX_HP;
 	}
 	
