@@ -26,5 +26,10 @@ Chen:
 
 Weber
 1. 遊戲地圖的存檔
+2. Lua Console!!! (可以使用原生lua語法)
+    > ### 遊戲內命令列表
+    > timeSet(int)
+    > saveMap()
+    > loadMap()
 
 ## Feedback
