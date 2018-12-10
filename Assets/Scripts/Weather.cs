@@ -7,7 +7,7 @@ public class Weather : MonoBehaviour
 
     public Transform player;
     public float raining_rate;
-    private uint rainfall;
+    private uint rainfall;// how heavy is the rain
     private float rain_start, rain_end;
 
     // Use this for initialization
@@ -19,14 +19,12 @@ public class Weather : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(rain_start);
-        Debug.Log(rain_end);
-        Debug.Log(rainfall);
-
         if (rainfall > 0)
         {
+            //turn cloudy
             if (time.interval(GetComponent<time>().world_time, time.add(rain_start, -200), rain_start))
                 GetComponent<Light>().intensity -= 0.1f * Time.deltaTime;
+            //starts raining
             else if (time.interval(GetComponent<time>().world_time, rain_start, rain_end))
             {
                 for (int i = 0; i < rainfall; i++)
@@ -39,6 +37,7 @@ public class Weather : MonoBehaviour
                     rain.transform.position = new Vector3(posX, posY, posZ);
                 }
             }
+            //turn sunny
             else if (time.interval(GetComponent<time>().world_time, rain_end, time.add(rain_end, 200)))
             {
                 GetComponent<Light>().intensity += 0.1f * Time.deltaTime;
@@ -49,6 +48,7 @@ public class Weather : MonoBehaviour
                 }
             }
         }
+        //decide raining or not every day
         else if (GetComponent<time>().world_time == 0) dice_rain();
     }
 
@@ -58,9 +58,18 @@ public class Weather : MonoBehaviour
         if (Random.Range(0, 100) <= 100 * raining_rate)
         {
             rainfall = (uint)Random.Range(10, 40);
-            rain_start = Random.Range(200, 23999);
+            rain_start = time.add(rain_end, Random.Range(500, 23000));
             rain_end = time.add(rain_start, Random.Range(500, 30000));
         }
+    }
+
+    //0 < last_time < 24000, 10 < heavy < 40
+    public void rain(float last_time, uint heavy)
+    {
+        GetComponent<Light>().intensity = 0;
+        rainfall = heavy;
+        rain_start = GetComponent<time>().world_time;
+        rain_end = time.add(rain_start, last_time);
     }
 
 }

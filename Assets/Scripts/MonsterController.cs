@@ -9,10 +9,12 @@ public class MonsterController : MonoBehaviour {
 	private Animator an;
 	public int MAX_HP;
 	private int HP;
+    AudioSource arrr;
 
-	// Use this for initialization
-	void Start () {
-		an = GetComponent<Animator>();
+    // Use this for initialization
+    void Start () {
+        arrr = GetComponents<AudioSource>()[1];
+        an = GetComponent<Animator>();
 		an.speed = 0.1f;
 		HP = MAX_HP;
 	}
@@ -30,7 +32,33 @@ public class MonsterController : MonoBehaviour {
 		}
 	}
 
-	void chase()
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.name == "player") arrr.Play();
+    }
+
+    private void OnTriggerStay(Collider collision)
+    {
+         if (collision.gameObject.name == "player")
+        {
+            arrr.volume = (5 - Vector3.Distance(transform.position, collision.gameObject.transform.position)) / 5;
+           float angle = Vector3.Angle(transform.right, collision.gameObject.transform.position);
+           if (angle <= 45)
+               arrr.panStereo = (45 - angle) / 45;
+           else
+           {
+               angle = Vector3.Angle(-transform.right, collision.gameObject.transform.position);
+               arrr.panStereo = (45 - angle) / 45;
+           }
+        }
+    }
+
+   // private void OnTriggerExit(Collider collision)
+   // {
+   //     if (collision.gameObject.name == "player") arrr.Stop();
+   // }
+
+    void chase()
 	{
 		an.SetFloat("speed", 0);
 		Vector3 endPoint = player.transform.position;

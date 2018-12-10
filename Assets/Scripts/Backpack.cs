@@ -9,7 +9,7 @@ public class Backpack : MonoBehaviour {
     public float touchable_distance;
     public Canvas itembox_image;
     public GameObject item_number_ui, game_info_ui;
-    private Vector3 select_frame_pos = new Vector3(77.875f, 0, 0);
+    private Vector3 select_frame_pos = new Vector3(57.5f, 0, 0);
     int selector = 0;
     List<string> itembox_lite = new List<string>();
     Dictionary<string, int> material_num = new Dictionary<string, int>()

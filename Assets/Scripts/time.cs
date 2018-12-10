@@ -47,7 +47,7 @@ public class time : MonoBehaviour {
         return timeC;
     }
 
-    //0 <= begin, end < world_day
+    //check if now is between begin and end (0 <= begin, end < world_day)
     static public bool interval(float now, float begin, float end)
     {
         if (begin < 0 || end >= world_day) return false;
