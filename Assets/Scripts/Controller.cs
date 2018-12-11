@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
-	public float walk_speed, run_speed, jump, sensitivity, atk_range;
+	public float walk_speed, run_speed, jump, sensitivity, atk_range, heal_speed;
 	public readonly int MAX_HP = 20;
 	public GameObject health_bar;
 	public Canvas consoleCanvas;
@@ -15,7 +15,7 @@ public class Controller : MonoBehaviour
 	private int HP = 0;
 	private bool onGround = false;
 	private Animator an;
-	private float trigger_time = 1, speed;
+	private float trigger_time = 1, speed, heal_time = 0;
 
 	// Use this for initialization
 	void Start()
@@ -33,6 +33,13 @@ public class Controller : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+        heal_time += heal_speed * Time.deltaTime;
+        if(heal_time >= 50)
+        {
+            heal_time = 0;
+            Add_HP(1);
+        }
+
 		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
 			if (consoleCanvas.enabled)

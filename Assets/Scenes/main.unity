@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -3015,6 +3015,7 @@ MonoBehaviour:
   jump: 300
   sensitivity: 100
   atk_range: 5
+  heal_speed: 1
   health_bar: {fileID: 640522259}
   consoleCanvas: {fileID: 1458324865}
   mainCanvas: {fileID: 681191398}
