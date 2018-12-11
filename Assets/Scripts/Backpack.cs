@@ -8,7 +8,7 @@ public class Backpack : MonoBehaviour {
     public bool infinite_block, show_gameinfo;
     public float touchable_distance;
     public Canvas itembox_image;
-    public GameObject item_number_ui, game_info_ui;
+    public GameObject item_number_ui, game_info_ui, item_image;
     private Vector3 select_frame_pos = new Vector3(57.5f, 0, 0);
     int selector = 0;
     List<string> itembox_lite = new List<string>();
@@ -44,6 +44,8 @@ public class Backpack : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        update_itembox();
+
         if (show_gameinfo)
             game_info_ui.GetComponent<Transform>().GetChild(0).GetComponent<Text>().text = "Player Position: " + transform.position.ToString();
         else
@@ -51,12 +53,6 @@ public class Backpack : MonoBehaviour {
             game_info_ui.GetComponent<Transform>().GetChild(0).GetComponent<Text>().text = "";
             game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "";
         }
-
-        //update itembox information//
-        for (int i = 0; i < itembox_lite.Count; i++)
-            item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = material_num[itembox_lite[i]].ToString();
-        for (int i = itembox_lite.Count; i < 9; i++)
-            item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = "";
 
         //select itembox//
         if (Input.GetKey(KeyCode.Alpha1))
@@ -188,6 +184,21 @@ public class Backpack : MonoBehaviour {
             string[] key = data[i].Split(separator, System.StringSplitOptions.RemoveEmptyEntries);
             itembox_lite.Add(key[0]);
             material_num[key[0]] = int.Parse(key[1]);
+        }
+    }
+
+    //update itembox information//
+    private void update_itembox()
+    {
+        for (int i = 0; i < itembox_lite.Count; i++)
+        {
+            item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = material_num[itembox_lite[i]].ToString();
+            item_image.GetComponent<Transform>().GetChild(i).GetComponent<RawImage>().texture = Resources.Load("Icon/" + itembox_lite[i]) as Texture;
+        }
+        for (int i = itembox_lite.Count; i < 9; i++)
+        {
+            item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = "";
+            item_image.GetComponent<Transform>().GetChild(i).GetComponent<RawImage>().texture = Resources.Load("Icon/blank") as Texture;
         }
     }
 }
