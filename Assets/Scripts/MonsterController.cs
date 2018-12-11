@@ -6,8 +6,8 @@ public class MonsterController : MonoBehaviour {
 
 	public GameObject player;
 	public float speed;
-	private Animator an;
 	public int MAX_HP;
+	private Animator an;
 	private int HP;
     AudioSource arrr;
 

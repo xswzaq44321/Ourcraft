@@ -44,7 +44,7 @@ public class MonsterGen : MonoBehaviour
 		{ // day time
 			if (this.transform.childCount > 0)
 			{
-				for (int i = 0; i < 10; i++)
+				for (int i = 0; i < 10 && i < this.transform.childCount; i++)
 				{
 					Destroy(this.transform.GetChild(0).gameObject);
 					this.transform.GetChild(0).parent = null; 

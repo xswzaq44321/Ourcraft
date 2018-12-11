@@ -35,6 +35,12 @@ public class LuaConsoleControll : MonoBehaviour
 		{
 			objectHolder.saveRead.GetComponent<MapSaveRead>().loadMap();
 		});
+		script.Globals["setHP"] = (Action<int>)((a) =>
+		{
+			objectHolder.player.GetComponent<Controller>().set_HP(a);
+		});
+		//script.Globals["walk_speed"] = objectHolder.player.GetComponent<Controller>().walk_speed;
+		//script.Globals["run_speed"] = objectHolder.player.GetComponent<Controller>().run_speed;
 	}
 
 	// Update is called once per frainputField
@@ -64,13 +70,14 @@ public class LuaConsoleControll : MonoBehaviour
 				}
 			}
 			inputField.text = "";
+			inputField.ActivateInputField();
 		}
 	}
 
 	public void enable()
 	{
-		inputField.ActivateInputField();
 		inputField.enabled = true;
+		inputField.ActivateInputField();
 	}
 
 	public void disable()

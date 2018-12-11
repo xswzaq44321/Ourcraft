@@ -159,6 +159,7 @@ public class Controller : MonoBehaviour
 		}
 		if (HP <= 0)
 		{
+			GameObject.Find("GameSaveReadObject").GetComponent<MapSaveRead>().saveMap();
 			Cursor.lockState = CursorLockMode.None;
 			mainCanvas.enabled = false;
 			consoleCanvas.enabled = false;

@@ -5,14 +5,17 @@ using System.IO;
 using System;
 using UnityEditor;
 
-public class MapSaveRead : MonoBehaviour {
+public class MapSaveRead : MonoBehaviour
+{
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		//if(Input.GetKeyDown(KeyCode.M))
 		//{
 		//	saveMap("map1.json");
@@ -71,10 +74,19 @@ public class MapSaveRead : MonoBehaviour {
 		map.player.pos.X = player.transform.position.x;
 		map.player.pos.Y = player.transform.position.y;
 		map.player.pos.Z = player.transform.position.z;
-		map.player.HP = player.GetComponent<Controller>().get_HP();
+		int HP = player.GetComponent<Controller>().get_HP();
+		if (HP <= 0)
+		{
+			map.player.HP = player.GetComponent<Controller>().MAX_HP;
+			map.time = 8000;
+		}
+		else
+		{
+			map.player.HP = HP;
+			// get world time
+			map.time = GameObject.Find("World").GetComponent<time>().get_time();
+		}
 		map.player.backpack = player.GetComponent<Backpack>().save_backpack().ConvertAll(s => string.Copy(s));
-		// get world time
-		map.time = GameObject.Find("World").GetComponent<time>().get_time();
 
 		map.saveToJson(fileName);
 	}
