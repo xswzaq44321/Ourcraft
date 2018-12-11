@@ -1,13 +1,13 @@
-﻿# OurCraft
+# OurCraft
 
 ## How to play your game
-移動: WASD
-跑步: double click W
-跳躍: Space
-移動視角: Mouse
-物品欄選擇: alpha-num
-取得物品: Left Click
-放置物品: Right Click
+移動: WASD<br/>
+跑步: double click W<br/>
+跳躍: Space<br/>
+移動視角: Mouse<br/>
+物品欄選擇: alpha-num<br/>
+取得物品: Left Click<br/>
+放置物品: Right Click<br/>
 
 ## Environment
 Windows
@@ -15,9 +15,9 @@ Windows
 ## Your game
 
 ## Game design (how to design your character, monster, etc.)
-character: 就是普通的維京人，喜歡蓋房子
-monster: 殭屍化的維京人，動作緩慢，很吵
-遊戲中的一天(24000單位時間)為現實中的20分鐘，到晚上會生成怪物
+character: 就是普通的維京人，喜歡蓋房子<br/>
+monster: 殭屍化的維京人，動作緩慢，很吵<br/>
+遊戲中的一天(24000單位時間)為現實中的20分鐘，到晚上會生成怪物<br/>
 
 ## Bonus
 Chen:
@@ -34,9 +34,9 @@ Weber
 1. 遊戲地圖的存檔
 2. Lua Console!!! (可以使用原生lua語法)
     > ### 遊戲內命令列表
-    > timeSet(int)
-    > saveMap()
-    > loadMap()
+    > timeSet(int)<br/>
+    > saveMap()<br/>
+    > loadMap()<br/>
 3. player與monster被攻擊時往後退
 
 ## Feedback
