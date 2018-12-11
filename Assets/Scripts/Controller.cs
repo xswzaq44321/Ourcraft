@@ -11,21 +11,23 @@ public class Controller : MonoBehaviour
 	public GameObject health_bar;
 	public Canvas consoleCanvas;
 	public Canvas mainCanvas;
+	public Canvas deadCanvas;
 	private int HP = 0;
 	private bool onGround = false;
 	private Animator an;
-    private float trigger_time = 1, speed;
+	private float trigger_time = 1, speed;
 
 	// Use this for initialization
 	void Start()
 	{
-        speed = walk_speed;
+		speed = walk_speed;
 		Add_HP(MAX_HP);
 		an = GetComponent<Animator>();
 		GetComponents<AudioSource>()[0].Stop();
 		GetComponents<AudioSource>()[1].Stop();
 		GetComponents<AudioSource>()[2].Stop();
 		consoleCanvas.enabled = false;
+		deadCanvas.enabled = false;
 	}
 
 	// Update is called once per frame
@@ -47,7 +49,7 @@ public class Controller : MonoBehaviour
 				consoleCanvas.GetComponent<LuaConsoleControll>().enable();
 			}
 		}
-		if (!consoleCanvas.enabled)
+		if (!consoleCanvas.enabled && HP > 0)
 		{
 			handleMove();
 		}
@@ -57,37 +59,37 @@ public class Controller : MonoBehaviour
 	{
 		Cursor.lockState = CursorLockMode.None;
 
-        //to menu//
-        //if (Input.GetKey(KeyCode.Escape)) SceneManager.LoadScene(0);
+		//to menu//
+		//if (Input.GetKey(KeyCode.Escape)) SceneManager.LoadScene(0);
 
-        //character moving + jumping//
+		//character moving + jumping//
 		an.SetFloat("speed", 0);
-        trigger_time += Time.deltaTime;
-        if (speed == run_speed && Input.GetKeyUp(KeyCode.W))
-        {
-            speed = walk_speed;
-            GetComponents<AudioSource>()[0].pitch = 1;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            if (speed == walk_speed && trigger_time <= 0.5f)
-            {
-                speed = run_speed;
-                GetComponents<AudioSource>()[0].pitch = 1.3f;
-            }
-            else trigger_time = 0;
-        }
+		trigger_time += Time.deltaTime;
+		if (speed == run_speed && Input.GetKeyUp(KeyCode.W))
+		{
+			speed = walk_speed;
+			GetComponents<AudioSource>()[0].pitch = 1;
+		}
+		if (Input.GetKeyDown(KeyCode.W))
+		{
+			if (speed == walk_speed && trigger_time <= 0.5f)
+			{
+				speed = run_speed;
+				GetComponents<AudioSource>()[0].pitch = 1.3f;
+			}
+			else trigger_time = 0;
+		}
 		if (Input.GetKey(KeyCode.W))
-        {
-            transform.localPosition += speed * transform.forward * Time.deltaTime;
+		{
+			transform.localPosition += speed * transform.forward * Time.deltaTime;
 			an.SetFloat("speed", speed);
 		}
-        else if (Input.GetKey(KeyCode.S))
-        {
-            transform.localPosition -= speed * transform.forward * Time.deltaTime;
-            an.SetFloat("speed", -speed);
-        }
-        if (Input.GetKey(KeyCode.A))
+		else if (Input.GetKey(KeyCode.S))
+		{
+			transform.localPosition -= speed * transform.forward * Time.deltaTime;
+			an.SetFloat("speed", -speed);
+		}
+		if (Input.GetKey(KeyCode.A))
 		{
 			transform.localPosition -= speed * transform.right * Time.deltaTime;
 		}
@@ -147,6 +149,13 @@ public class Controller : MonoBehaviour
 		{
 			GetComponent<Rigidbody>().AddForce((-transform.forward + transform.up) * 200);
 			GetComponents<AudioSource>()[2].Play();
+		}
+		if (HP <= 0)
+		{
+			Cursor.lockState = CursorLockMode.None;
+			mainCanvas.enabled = false;
+			consoleCanvas.enabled = false;
+			deadCanvas.enabled = true;
 		}
 	}
 

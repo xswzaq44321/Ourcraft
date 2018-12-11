@@ -70,12 +70,14 @@ public class LuaConsoleControll : MonoBehaviour
 	public void enable()
 	{
 		inputField.ActivateInputField();
+		inputField.enabled = true;
 	}
 
 	public void disable()
 	{
 		inputField.text = "";
 		inputField.DeactivateInputField();
+		inputField.enabled = false;
 	}
 
 	void printMessage(string msg)
