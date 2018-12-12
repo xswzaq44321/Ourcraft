@@ -14,6 +14,7 @@ public class LuaConsoleControll : MonoBehaviour
 	Script script;
 	List<string> prevCommands;
 	int prevCommandsIter;
+	string helpMessage;
 
 	// Use this for initialization
 	void Start()
@@ -27,18 +28,22 @@ public class LuaConsoleControll : MonoBehaviour
 		{
 			objectHolder.world.GetComponent<time>().set_time(a);
 		});
+		helpMessage += "timeSet(time): set time to specific time.\r\n";
 		script.Globals["saveMap"] = (Action<string>)((name) =>
 		{
 			objectHolder.saveRead.GetComponent<MapSaveRead>().saveMap(name);
 		});
+		helpMessage += "saveMap(filename): save map as filename, filename could be spared.\r\n";
 		script.Globals["loadMap"] = (Action<string>)((name) =>
 		{
 			objectHolder.saveRead.GetComponent<MapSaveRead>().loadMap(name);
 		});
+		helpMessage += "loadMap(filename): load map filename, filename could be spared.\r\n";
 		script.Globals["setHP"] = (Action<int>)((a) =>
 		{
 			objectHolder.player.GetComponent<Controller>().set_HP(a);
 		});
+		helpMessage += "setHP(hp): set player's health to HP.\r\n";
 	}
 
 	// Update is called once per frainputField
@@ -55,6 +60,10 @@ public class LuaConsoleControll : MonoBehaviour
 			if (inputField.text == "clear") // magic words
 			{
 				message.text = "";
+			}
+			else if (inputField.text == "help")
+			{
+				printMessage(helpMessage);
 			}
 			else // execute lua
 			{
