@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
-using UnityEditor;
 
 public class MapSaveRead : MonoBehaviour
 {
@@ -99,21 +98,24 @@ public class Map
 	{
 		this.blocks = new List<Block>();
 		player = new Player();
+		string documentPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+		savePath = documentPath + "/Ourcraft Maps";
+		System.IO.Directory.CreateDirectory(savePath);
 	}
 
 	public int count;
 	public List<Block> blocks;
 	public Player player;
 	public float time;
+	string savePath;
 
 	// transform map to json
 	public void saveToJson(string fileName)
 	{
 		string json = JsonUtility.ToJson(this);
-		FileStream fs = new FileStream("Assets/Resources/Maps/" + fileName, FileMode.Create);
+		FileStream fs = new FileStream(savePath + "/" + fileName, FileMode.Create);
 		StreamWriter sw = new StreamWriter(fs);
 		sw.Write(json);
-		AssetDatabase.ImportAsset("Assets/Resources/Maps/" + fileName);
 
 		sw.Close();
 		fs.Close();
@@ -121,7 +123,7 @@ public class Map
 	// transform json to map
 	public void openJson(string fileName)
 	{
-		FileStream fs = new FileStream("Assets/Resources/Maps/" + fileName, FileMode.Open);
+		FileStream fs = new FileStream(savePath + "/" + fileName, FileMode.Open);
 		StreamReader sr = new StreamReader(fs);
 		string json = sr.ReadToEnd();
 		var oldMap = JsonUtility.FromJson<Map>(json);
