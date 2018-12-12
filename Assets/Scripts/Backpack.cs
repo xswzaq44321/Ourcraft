@@ -155,8 +155,9 @@ public class Backpack : MonoBehaviour {
                         else if (rch.collider.gameObject.transform.position.z - rch.point.z == -block.transform.localScale.z / 2)
                             block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, 0, block.transform.localScale.z);
                     }
-                    if (--material_num[itembox_lite[selector]] <= 0 && !infinite_block)
-                        itembox_lite.RemoveAt(selector);
+                    if(!infinite_block)
+                        if (--material_num[itembox_lite[selector]] <= 0)
+                            itembox_lite.RemoveAt(selector);
                 }
 
                 if (show_gameinfo)
