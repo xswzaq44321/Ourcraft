@@ -33,12 +33,12 @@ public class Controller : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-        heal_time += heal_speed * Time.deltaTime;
-        if(heal_time >= 50)
-        {
-            heal_time = 0;
-            Add_HP(1);
-        }
+		heal_time += heal_speed * Time.deltaTime;
+		if (heal_time >= 50)
+		{
+			heal_time = 0;
+			Add_HP(1);
+		}
 
 		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
@@ -66,8 +66,14 @@ public class Controller : MonoBehaviour
 	{
 		Cursor.lockState = CursorLockMode.None;
 
-		//to menu//
-		//if (Input.GetKey(KeyCode.Escape)) SceneManager.LoadScene(0);
+		//to menu, don't want it to work when editing//
+#if !UNITY_EDITOR
+		if (Input.GetKey(KeyCode.Escape))
+		{
+			SceneManager.LoadScene(0);
+			return;
+		}
+#endif
 
 		//character moving + jumping//
 		an.SetFloat("speed", 0);
@@ -159,7 +165,7 @@ public class Controller : MonoBehaviour
 		}
 		if (HP <= 0)
 		{
-			GameObject.Find("GameSaveReadObject").GetComponent<MapSaveRead>().saveMap();
+			GameObject.Find("GameSaveReadObject").GetComponent<MapSaveRead>().saveMap(null);
 			Cursor.lockState = CursorLockMode.None;
 			mainCanvas.enabled = false;
 			consoleCanvas.enabled = false;

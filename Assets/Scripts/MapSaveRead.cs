@@ -15,22 +15,24 @@ public class MapSaveRead : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		//if(Input.GetKeyDown(KeyCode.M))
-		//{
-		//	saveMap("map1.json");
-		//}
-		//if (Input.GetKeyDown(KeyCode.L))
-		//{
-		//	loadMap("map1.json");
-		//}
 	}
 
 	public bool flag = true;
 	private Map map;
 
 	// instantiate all objects
-	public void loadMap(string fileName = "map1.json")
+	public void loadMap(string fileName)
 	{
+		if (fileName == null)
+			fileName = "map1";
+		// if fileName not ended with extension ".json", make it so.
+		if (fileName.Length - 5 < 0 || fileName.Substring(fileName.Length - 5) != ".json")
+			fileName += ".json";
+
+		// open file first to tease exceptions
+		map = new Map();
+		map.openJson(fileName);
+
 		// destroying old blocks
 		var oldBlocks = GameObject.FindGameObjectsWithTag("Block");
 		for (int i = 0; i < oldBlocks.Length; ++i)
@@ -38,8 +40,6 @@ public class MapSaveRead : MonoBehaviour
 			Destroy(oldBlocks[i]);
 		}
 
-		map = new Map();
-		map.openJson(fileName);
 		// load map blocks
 		var blocks = map.blocks;
 		string[] separator = { "(", " (" };
@@ -58,8 +58,14 @@ public class MapSaveRead : MonoBehaviour
 		GameObject.Find("World").GetComponent<time>().set_time(map.time);
 	}
 	// save blocks & player informations
-	public void saveMap(string fileName = "map1.json")
+	public void saveMap(string fileName)
 	{
+		if (fileName == null)
+			fileName = "map1";
+		// if fileName not ended with extension ".json", make it so.
+		if (fileName.Length - 5 < 0 || fileName.Substring(fileName.Length - 5) != ".json")
+			fileName += ".json";
+
 		map = new Map();
 		// get all block's position
 		var blocks = GameObject.FindGameObjectsWithTag("Block");

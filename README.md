@@ -8,6 +8,7 @@
 物品欄選擇: alpha-num<br/>
 取得物品: Left Click<br/>
 放置物品: Right Click<br/>
+回到選單: Esc<br/>
 
 ## Environment
 Windows
@@ -33,10 +34,11 @@ Chen:
 Weber
 1. 遊戲地圖的存檔
 2. Lua Console!!! (可以使用原生lua語法)
-    > ### 遊戲內命令列表
-    > timeSet(int)<br/>
-    > saveMap()<br/>
-    > loadMap()<br/>
-3. player與monster被攻擊時往後退
+> 遊戲內命令列表<br>
+> 3. timeSet(int) [from 0 ~ 24000]<br/>
+> 4. saveMap(string) [filename]<br/>
+> 5. loadMap(string) [filename]<br/>
+> 6. setHP(int) [from 0 ~ 20]<br>
+7. player與monster被攻擊時往後退
 
 ## Feedback

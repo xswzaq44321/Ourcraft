@@ -27,20 +27,18 @@ public class LuaConsoleControll : MonoBehaviour
 		{
 			objectHolder.world.GetComponent<time>().set_time(a);
 		});
-		script.Globals["saveMap"] = (Action)(() =>
+		script.Globals["saveMap"] = (Action<string>)((name) =>
 		{
-			objectHolder.saveRead.GetComponent<MapSaveRead>().saveMap();
+			objectHolder.saveRead.GetComponent<MapSaveRead>().saveMap(name);
 		});
-		script.Globals["loadMap"] = (Action)(() =>
+		script.Globals["loadMap"] = (Action<string>)((name) =>
 		{
-			objectHolder.saveRead.GetComponent<MapSaveRead>().loadMap();
+			objectHolder.saveRead.GetComponent<MapSaveRead>().loadMap(name);
 		});
 		script.Globals["setHP"] = (Action<int>)((a) =>
 		{
 			objectHolder.player.GetComponent<Controller>().set_HP(a);
 		});
-		//script.Globals["walk_speed"] = objectHolder.player.GetComponent<Controller>().walk_speed;
-		//script.Globals["run_speed"] = objectHolder.player.GetComponent<Controller>().run_speed;
 	}
 
 	// Update is called once per frainputField
