@@ -20,7 +20,7 @@ public class Controller : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-        Cursor.visible = false;
+		Cursor.visible = false;
 		speed = walk_speed;
 		Add_HP(MAX_HP);
 		an = GetComponent<Animator>();
@@ -45,12 +45,14 @@ public class Controller : MonoBehaviour
 		{
 			if (consoleCanvas.enabled)
 			{
+				Cursor.visible = false;
 				consoleCanvas.enabled = false;
 				mainCanvas.enabled = true;
 				consoleCanvas.GetComponent<LuaConsoleControll>().disable();
 			}
 			else
 			{
+				Cursor.visible = true;
 				Cursor.lockState = CursorLockMode.None;
 				consoleCanvas.enabled = true;
 				mainCanvas.enabled = false;
@@ -67,7 +69,7 @@ public class Controller : MonoBehaviour
 	{
 		Cursor.lockState = CursorLockMode.None;
 
-        //to menu, don't want it to work when editing//
+		//to menu, don't want it to work when editing//
 #if !UNITY_EDITOR
 		if (Input.GetKey(KeyCode.Escape))
 		{
@@ -77,8 +79,8 @@ public class Controller : MonoBehaviour
 		}
 #endif
 
-        //character moving + jumping//
-        an.SetFloat("speed", 0);
+		//character moving + jumping//
+		an.SetFloat("speed", 0);
 		trigger_time += Time.deltaTime;
 		if (speed == run_speed && Input.GetKeyUp(KeyCode.W))
 		{
@@ -167,8 +169,8 @@ public class Controller : MonoBehaviour
 		}
 		if (HP <= 0)
 		{
-            Cursor.visible = true;
-            GameObject.Find("GameSaveReadObject").GetComponent<MapSaveRead>().saveMap(null);
+			Cursor.visible = true;
+			GameObject.Find("GameSaveReadObject").GetComponent<MapSaveRead>().saveMap(null);
 			Cursor.lockState = CursorLockMode.None;
 			mainCanvas.enabled = false;
 			consoleCanvas.enabled = false;
