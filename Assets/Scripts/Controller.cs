@@ -20,6 +20,7 @@ public class Controller : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+        Cursor.visible = false;
 		speed = walk_speed;
 		Add_HP(MAX_HP);
 		an = GetComponent<Animator>();
@@ -34,7 +35,7 @@ public class Controller : MonoBehaviour
 	void Update()
 	{
 		heal_time += heal_speed * Time.deltaTime;
-		if (heal_time >= 50)
+		if (heal_time >= 25)
 		{
 			heal_time = 0;
 			Add_HP(1);
@@ -66,17 +67,18 @@ public class Controller : MonoBehaviour
 	{
 		Cursor.lockState = CursorLockMode.None;
 
-		//to menu, don't want it to work when editing//
+        //to menu, don't want it to work when editing//
 #if !UNITY_EDITOR
 		if (Input.GetKey(KeyCode.Escape))
 		{
+            Cursor.visible = true;
 			SceneManager.LoadScene(0);
 			return;
 		}
 #endif
 
-		//character moving + jumping//
-		an.SetFloat("speed", 0);
+        //character moving + jumping//
+        an.SetFloat("speed", 0);
 		trigger_time += Time.deltaTime;
 		if (speed == run_speed && Input.GetKeyUp(KeyCode.W))
 		{
@@ -165,7 +167,8 @@ public class Controller : MonoBehaviour
 		}
 		if (HP <= 0)
 		{
-			GameObject.Find("GameSaveReadObject").GetComponent<MapSaveRead>().saveMap(null);
+            Cursor.visible = true;
+            GameObject.Find("GameSaveReadObject").GetComponent<MapSaveRead>().saveMap(null);
 			Cursor.lockState = CursorLockMode.None;
 			mainCanvas.enabled = false;
 			consoleCanvas.enabled = false;
