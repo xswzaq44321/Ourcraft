@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class Backpack : MonoBehaviour {
 
-    public bool infinite_block, show_gameinfo;
+    public bool infinite_block;
+    private bool show_gameinfo = false;
     public float touchable_distance;
     public Canvas itembox_image;
     public GameObject item_number_ui, game_info_ui, item_image;
@@ -46,12 +47,22 @@ public class Backpack : MonoBehaviour {
 
         update_itembox();
 
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            if (show_gameinfo) show_gameinfo = false;
+            else
+            {
+                show_gameinfo = true;
+                game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "Clicked Position: ";
+                game_info_ui.GetComponent<Transform>().GetChild(2).GetComponent<Text>().text = "Distance: ";
+            }
+        }
         if (show_gameinfo)
             game_info_ui.GetComponent<Transform>().GetChild(0).GetComponent<Text>().text = "Player Position: " + transform.position.ToString();
         else
         {
-            game_info_ui.GetComponent<Transform>().GetChild(0).GetComponent<Text>().text = "";
-            game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "";
+            for(int i = 0; i < game_info_ui.GetComponent<Transform>().childCount; i++)
+                game_info_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = "";
         }
 
         //select itembox//
@@ -118,7 +129,10 @@ public class Backpack : MonoBehaviour {
                 }
 
                 if (show_gameinfo)
+                {
                     game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
+                    game_info_ui.GetComponent<Transform>().GetChild(2).GetComponent<Text>().text = "Distance: " + Vector3.Distance(rch.point, transform.position).ToString();
+                }
             }
         }
 

@@ -293,7 +293,6 @@ GameObject:
   - component: {fileID: 95434033051037216}
   - component: {fileID: 54730732104184270}
   - component: {fileID: 65815113740980374}
-  - component: {fileID: 65737324019387418}
   - component: {fileID: 114595982709706752}
   - component: {fileID: 82894240925065064}
   - component: {fileID: 82853225725955162}
@@ -1952,18 +1951,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &65737324019387418
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1269967203822694}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 11, y: 11, z: 11}
-  m_Center: {x: 0, y: 0.81006145, z: 0.11899805}
 --- !u!65 &65815113740980374
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -2166,6 +2153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   speed: 1
+  sight_distance: 40
+  sight_angle: 90
   MAX_HP: 5
 --- !u!137 &137049354574245040
 SkinnedMeshRenderer:

@@ -12,7 +12,7 @@ public class Controller : MonoBehaviour
 	public Canvas consoleCanvas;
 	public Canvas mainCanvas;
 	public Canvas deadCanvas;
-	private int HP = 0;
+	private int HP = 0, side = 1;
 	private bool onGround = false;
 	private Animator an;
 	private float trigger_time = 1, speed, heal_time = 0;
@@ -116,14 +116,16 @@ public class Controller : MonoBehaviour
 		}
 		if (Input.GetKey(KeyCode.Space) && onGround)
 		{
-			GetComponent<Rigidbody>().AddForce(Vector3.up * jump);
+			GetComponent<Rigidbody>().AddForce(Vector3.up * jump * side);
 			onGround = false;
 		}
+        if (Input.GetKey(KeyCode.Alpha0))
+            onGround = true;
 
 		//camera angle//
-		transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
+		transform.Rotate(new Vector3(0, side * Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
 		float max = transform.GetChild(0).eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-		if (max >= 270 || max <= 90)
+		if (max > 270 || max < 90)
 			transform.GetChild(0).Rotate(new Vector3(-Input.GetAxis("Mouse Y") * sensitivity, 0, 0) * Time.deltaTime);
 
 		//attack monster//
@@ -139,7 +141,20 @@ public class Controller : MonoBehaviour
 			}
 		}
 
-		Cursor.lockState = CursorLockMode.Locked;
+        if (transform.position.y < -20 && side == 1)
+        {
+            side = -1;
+            Physics.gravity *= -1;
+            transform.Rotate(new Vector3(180, 0, 0));
+        }
+        else if (transform.position.y > 20 && side == -1)
+        {
+            side = 1;
+            Physics.gravity *= -1;
+            transform.Rotate(new Vector3(180, 0, 0));
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
 	}
 
 	void OnCollisionEnter(Collision col)

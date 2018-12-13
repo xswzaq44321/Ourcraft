@@ -24,8 +24,9 @@ public class MonsterGen : MonoBehaviour
 	{
 		Vector3 dist = new Vector3(1, 0, 0);
 		Vector3 endPoint;
-		time += Time.deltaTime;
-		if (sun.transform.eulerAngles.x > 270f && time > 1f && this.transform.childCount <= maxCount)
+		time += Time.deltaTime * 20;
+		if (sun.transform.eulerAngles.x > 270f && time > generateInterval
+            && this.transform.childCount < maxCount)
 		{ // night time
 			time = 0;
 			// decide where and how far from player that the monsters'll spawn
@@ -37,6 +38,7 @@ public class MonsterGen : MonoBehaviour
 			GameObject enemy = Instantiate(monster);
 			enemy.transform.parent = this.transform;
 			enemy.transform.position = endPoint;
+            enemy.transform.Rotate(0, Random.Range(0, 259), 0);
 			// target lock to player
 			enemy.GetComponent<MonsterController>().player = player;
 		}

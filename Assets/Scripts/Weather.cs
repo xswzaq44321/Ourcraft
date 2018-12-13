@@ -14,7 +14,6 @@ public class Weather : MonoBehaviour
     void Start()
     {
         dice_rain();
-        rain_start = 8200;
     }
 
     // Update is called once per frame

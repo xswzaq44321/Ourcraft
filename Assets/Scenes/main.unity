@@ -373,13 +373,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 75336920}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 181f1d0e98daaf44aab8dd7bfb97143c, type: 3}
+  m_Script: {fileID: 11500000, guid: ab08973d134fe644caca502f0edfb586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MainLand: {fileID: 555320273}
+  material: {fileID: 4469629682916500, guid: d883a369f922a3046aec4bfd862585af, type: 2}
   rangeX: {x: -50, y: 50}
   rangeZ: {x: -50, y: 50}
   rangeHeight: {x: 5, y: 40}
+  quantity: 100
 --- !u!114 &75336924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1709,6 +1711,80 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &700946574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 700946575}
+  - component: {fileID: 700946577}
+  - component: {fileID: 700946576}
+  m_Layer: 5
+  m_Name: Distance
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &700946575
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 700946574}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1728130656}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -72, y: 61}
+  m_SizeDelta: {x: 492, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &700946576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 700946574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 22
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Distance:'
+--- !u!222 &700946577
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 700946574}
 --- !u!1 &709773919
 GameObject:
   m_ObjectHideFlags: 0
@@ -3143,7 +3219,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infinite_block: 0
-  show_gameinfo: 1
   touchable_distance: 5
   itembox_image: {fileID: 681191398}
   item_number_ui: {fileID: 2045018163}
@@ -3309,6 +3384,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!65 &1449857191
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1449857181}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 21, y: 2, z: 21}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1458324862
 GameObject:
   m_ObjectHideFlags: 0
@@ -3502,6 +3589,10 @@ Prefab:
       propertyPath: m_Convex
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300002, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 547247d608a1e004dbeb8805a2721fe8, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
   m_IsPrefabParent: 0
@@ -3973,6 +4064,7 @@ RectTransform:
   m_Children:
   - {fileID: 1587504727}
   - {fileID: 226508038}
+  - {fileID: 700946575}
   m_Father: {fileID: 681191399}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4618,11 +4710,11 @@ MonoBehaviour:
   player: {fileID: 1449857181}
   sun: {fileID: 855311117}
   monster: {fileID: 1269967203822694, guid: 852fabf8b667f0a4f872435b6c8c289d, type: 2}
-  minRange: 10
-  maxRange: 20
+  minRange: 30
+  maxRange: 50
   MainLand: {fileID: 555320273}
-  generateInterval: 5
-  maxCount: 50
+  generateInterval: 200
+  maxCount: 25
 --- !u!1 &2026282558
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class Ground : MonoBehaviour {
             for (float j = rangeZ.x + 0.5f; j < rangeZ.y; j++)
             {
                 GameObject block = Instantiate(Resources.Load("blocks/" + material[Random.Range(0, material.Count - 1)]) as GameObject);
-                block.transform.position = new Vector3(i, MainLand.transform.position.y + block.transform.localScale.y / 2, j);
+                block.transform.position = new Vector3(i, 0.3f, j);
             }
 
     }

@@ -5,11 +5,12 @@ using UnityEngine;
 public class MonsterController : MonoBehaviour {
 
 	public GameObject player;
-	public float speed;
+	public float speed, sight_distance, sight_angle;
 	public int MAX_HP;
 	private Animator an;
 	private int HP;
     AudioSource arrr;
+    private float arrr_delay = 0;
 
     // Use this for initialization
     void Start () {
@@ -21,7 +22,13 @@ public class MonsterController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		chase();
+        arrr_delay += Time.deltaTime;
+        if (Vector3.Distance(player.transform.position, this.transform.position) <= sight_distance
+            && Vector3.Angle(player.transform.position - this.transform.position, this.transform.forward) <= sight_angle / 2)
+            chase();
+        else if (Vector3.Distance(player.transform.position, this.transform.position) <= 3)
+            chase();
+        else walk();
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -35,28 +42,30 @@ public class MonsterController : MonoBehaviour {
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.name == "player") arrr.Play();
+        arrr_delay = 0;
     }
 
     private void OnTriggerStay(Collider collision)
     {
-         if (collision.gameObject.name == "player")
+        if (arrr_delay > 10)
         {
-            arrr.volume = (5 - Vector3.Distance(transform.position, collision.gameObject.transform.position)) / 5;
-           float angle = Vector3.Angle(transform.right, collision.gameObject.transform.position);
-           if (angle <= 45)
-               arrr.panStereo = (45 - angle) / 45;
-           else
-           {
-               angle = Vector3.Angle(-transform.right, collision.gameObject.transform.position);
-               arrr.panStereo = (45 - angle) / 45;
-           }
+            arrr_delay = 0;
+            arrr.Play();
+        }
+        if (collision.gameObject.name == "player")
+        {
+            arrr.volume = (10 - Vector3.Distance(transform.position, collision.gameObject.transform.position)) / 10;
+            float angle = Vector3.Angle(transform.right, collision.gameObject.transform.position);
+            if (angle <= 45)
+                arrr.panStereo = (45 - angle) / 45;
+            else
+            {
+                angle = Vector3.Angle(-transform.right, collision.gameObject.transform.position);
+                arrr.panStereo = (45 - angle) / 45;
+            }
+            Debug.Log(angle);
         }
     }
-
-   // private void OnTriggerExit(Collider collision)
-   // {
-   //     if (collision.gameObject.name == "player") arrr.Stop();
-   // }
 
     void chase()
 	{
@@ -69,8 +78,18 @@ public class MonsterController : MonoBehaviour {
 		an.SetFloat("speed", speed);
 	}
 
+    void walk()
+    {
+        transform.forward += transform.right / 10 * Time.deltaTime;
+        transform.position += transform.forward * speed * Time.deltaTime;
+        an.SetFloat("speed", speed);
+    }
+
 	public void addHP(int deltaHP)
 	{
+        var bar = player.transform.position - transform.position;
+        bar.y = 0;
+        transform.forward = bar;
 		HP += deltaHP;
         if (HP > MAX_HP)
             HP = MAX_HP;
