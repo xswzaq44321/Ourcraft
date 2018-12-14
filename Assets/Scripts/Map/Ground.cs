@@ -8,6 +8,7 @@ public class Ground : MonoBehaviour {
     private List<string> material = new List<string>();
     public bool grass, sand, dirt, stone;
     public Vector2 rangeX, rangeZ;
+    public float altitude;
 
     // Use this for initialization
     void Start () {
@@ -19,9 +20,8 @@ public class Ground : MonoBehaviour {
             for (float j = rangeZ.x + 0.5f; j < rangeZ.y; j++)
             {
                 GameObject block = Instantiate(Resources.Load("blocks/" + material[Random.Range(0, material.Count - 1)]) as GameObject);
-                block.transform.position = new Vector3(i, 0.3f, j);
+                block.transform.position = new Vector3(i, 0.5f + altitude, j);
             }
-
     }
 	
 	// Update is called once per frame

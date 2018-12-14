@@ -46,7 +46,11 @@ public class Backpack : MonoBehaviour {
     void Update () {
 
         update_itembox();
+        if (infinite_block)
+            for (int i = 0; i < itembox_lite.Count; i++)
+                item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = "9999";
 
+        //show gameinfo//
         if (Input.GetKeyDown(KeyCode.F1))
         {
             if (show_gameinfo) show_gameinfo = false;
@@ -149,7 +153,9 @@ public class Backpack : MonoBehaviour {
                     {
                         GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
                         float PosX = Mathf.Floor(rch.point.x) + block.transform.localScale.x / 2;
-                        float PosY = rch.point.y + block.transform.localScale.y / 2;
+                        float PosY = 0;
+                        if (Physics.gravity.y < 0) PosY = rch.point.y + block.transform.localScale.y / 2;
+                        else if(Physics.gravity.y > 0) PosY = rch.point.y - block.transform.localScale.y / 2;
                         float PosZ = Mathf.Floor(rch.point.z) + block.transform.localScale.z / 2;
                         block.transform.position = new Vector3(PosX, PosY, PosZ);
                     }

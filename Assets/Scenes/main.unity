@@ -333,6 +333,7 @@ GameObject:
   - component: {fileID: 75336921}
   - component: {fileID: 75336922}
   - component: {fileID: 75336923}
+  - component: {fileID: 75336925}
   - component: {fileID: 75336924}
   m_Layer: 0
   m_Name: RandomMapGenerator
@@ -400,6 +401,26 @@ MonoBehaviour:
   stone: 1
   rangeX: {x: 60, y: 90}
   rangeZ: {x: 60, y: 90}
+  altitude: -0.2
+--- !u!114 &75336925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 75336920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a32035fa483e643bc84702a3fabcdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainLand: {fileID: 0}
+  grass: 0
+  sand: 0
+  dirt: 0
+  stone: 1
+  rangeX: {x: -10, y: 10}
+  rangeZ: {x: -10, y: 10}
+  altitude: -16.2
 --- !u!1 &91209857
 GameObject:
   m_ObjectHideFlags: 0
@@ -3527,19 +3548,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.85833627
+      value: -0.8583471
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0033880887
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.5130724
+      value: 0.5130695
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0020252375
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
       propertyPath: m_RootOrder
@@ -3571,11 +3592,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -180.21399
+      value: -180
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.39800003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63922985f6d2c95438bf602f1b4c34f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

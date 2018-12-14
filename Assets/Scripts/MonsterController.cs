@@ -55,15 +55,10 @@ public class MonsterController : MonoBehaviour {
         if (collision.gameObject.name == "player")
         {
             arrr.volume = (10 - Vector3.Distance(transform.position, collision.gameObject.transform.position)) / 10;
-            float angle = Vector3.Angle(transform.right, collision.gameObject.transform.position);
-            if (angle <= 45)
-                arrr.panStereo = (45 - angle) / 45;
-            else
-            {
-                angle = Vector3.Angle(-transform.right, collision.gameObject.transform.position);
-                arrr.panStereo = (45 - angle) / 45;
-            }
-            Debug.Log(angle);
+            float angle = Vector3.Angle(transform.position - player.transform.position, player.transform.forward);
+            arrr.panStereo = (90 - Mathf.Abs(90 - angle)) / 90;
+            if (Vector3.Dot(transform.position - player.transform.position, player.transform.right) < 0)
+                arrr.panStereo *= -1;
         }
     }
 
