@@ -3654,6 +3654,7 @@ MonoBehaviour:
   consoleCanvas: {fileID: 1458324865}
   mainCanvas: {fileID: 681191398}
   deadCanvas: {fileID: 863829684}
+  fly: 0
 --- !u!54 &1449857183
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5518,10 +5519,10 @@ MonoBehaviour:
   player: {fileID: 1449857181}
   sun: {fileID: 855311117}
   monster: {fileID: 1269967203822694, guid: 852fabf8b667f0a4f872435b6c8c289d, type: 2}
-  minRange: 10
-  maxRange: 20
+  minRange: 30
+  maxRange: 50
   MainLand: {fileID: 555320273}
-  generateInterval: 20
+  generateInterval: 200
   maxCount: 25
 --- !u!1 &2026282558
 GameObject:
