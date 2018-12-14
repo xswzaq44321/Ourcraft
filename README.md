@@ -26,6 +26,7 @@ Our game
 character: 就是普通的維京人，喜歡蓋房子<br/>
 monster: 殭屍化的維京人，動作緩慢，很吵<br/>
 遊戲中的一天(24000單位時間)為現實中的20分鐘，到晚上會生成怪物<br/>
+遊戲中可以使用console，在console中輸入help可以看到所有指令的說明。<br/>
 使用console的saveMap可以儲存地圖，Ex. saveMap("myCYKA")。預設儲存位置為"我的文件/Ourcraft Maps/"<br/>
 你也可以用console的loadMap來載入地圖。在使用saveMap、loadMap時若參數留白，將會使用預設檔名map1.json<br/>
 
