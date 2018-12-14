@@ -9,12 +9,15 @@ public class LuaConsoleControll : MonoBehaviour
 {
 
 	public InputField inputField;
-	public Text message;
+	public GameObject chatPanel, textObject;
 	public ObjectHolder objectHolder;
 	Script script;
 	List<string> prevCommands;
 	int prevCommandsIter;
-	string helpMessage;
+	[SerializeField]
+	List<string> helpMessageList = new List<string>();
+	[SerializeField]
+	List<Message> messageList = new List<Message>();
 
 	// Use this for initialization
 	void Start()
@@ -40,11 +43,18 @@ public class LuaConsoleControll : MonoBehaviour
 
 			if (inputField.text == "clear") // magic words
 			{
-				message.text = "";
+				while (messageList.Count > 0)
+				{
+					Destroy(messageList[0].textObject.gameObject);
+					messageList.Remove(messageList[0]);
+				}
 			}
 			else if (inputField.text == "help")
 			{
-				printMessage(helpMessage);
+				foreach (string msg in helpMessageList)
+				{
+					printMessage(msg);
+				}
 			}
 			else // execute lua
 			{
@@ -59,6 +69,20 @@ public class LuaConsoleControll : MonoBehaviour
 			}
 			inputField.text = "";
 			inputField.ActivateInputField();
+		}
+		else if (Input.GetKeyDown(KeyCode.UpArrow))
+		{
+			if (prevCommands.Count == 0)
+				return;
+			inputField.text = prevCommands[prevCommandsIter == 0 ? 0 : --prevCommandsIter];
+			inputField.selectionAnchorPosition = inputField.text.Length;
+		}
+		else if (Input.GetKeyDown(KeyCode.DownArrow))
+		{
+			if (prevCommands.Count == 0)
+				return;
+			inputField.text = ++prevCommandsIter >= prevCommands.Count ? "" : prevCommands[prevCommandsIter];
+			inputField.selectionAnchorPosition = inputField.text.Length;
 		}
 	}
 
@@ -77,15 +101,20 @@ public class LuaConsoleControll : MonoBehaviour
 
 	void printMessage(string msg)
 	{
-		message.text += (msg + "\r\n");
+		Message newMessage = new Message(msg);
+		GameObject newText = Instantiate(textObject, chatPanel.transform);
+		newMessage.textObject = newText.GetComponent<Text>();
+		newMessage.textObject.text = newMessage.text;
+		messageList.Add(newMessage);
 	}
 	void printMessage(string msg, Color color)
 	{
-		string tag = "#"
-			+ ((int)(color.r * 255)).ToString("X2")
-			+ ((int)(color.g * 255)).ToString("X2")
-			+ ((int)(color.b * 255)).ToString("X2");
-		message.text += ("<color=" + tag + ">" + msg + "\r\n" + "</color>");
+		Message newMessage = new Message(msg);
+		GameObject newText = Instantiate(textObject, chatPanel.transform);
+		newMessage.textObject = newText.GetComponent<Text>();
+		newMessage.textObject.text = newMessage.text;
+		newMessage.textObject.color = color;
+		messageList.Add(newMessage);
 	}
 
 	void loadCommands()
@@ -94,87 +123,98 @@ public class LuaConsoleControll : MonoBehaviour
 		{
 			objectHolder.world.GetComponent<time>().set_time(a);
 		});
-		helpMessage += "setTime(time): set time to specific time.\r\n";
+		helpMessageList.Add("setTime(time): set time to specific time.");
 		script.Globals["saveMap"] = (Action<string>)((name) =>
 		{
 			objectHolder.saveRead.GetComponent<MapSaveRead>().saveMap(name);
 		});
-		helpMessage += "saveMap(filename): save map as filename, filename could be spared.\r\n";
+		helpMessageList.Add("saveMap(filename): save map as filename, filename could be spared.");
 		script.Globals["loadMap"] = (Action<string>)((name) =>
 		{
 			objectHolder.saveRead.GetComponent<MapSaveRead>().loadMap(name);
 		});
-		helpMessage += "loadMap(filename): load map filename, filename could be spared.\r\n";
+		helpMessageList.Add("loadMap(filename): load map filename, filename could be spared.");
 		script.Globals["setHP"] = (Action<int>)((a) =>
 		{
 			objectHolder.player.GetComponent<Controller>().set_HP(a);
 		});
-		helpMessage += "setHP(hp): set player's health to HP.\r\n";
+		helpMessageList.Add("setHP(hp): set player's health to HP.");
 		script.Globals["setWalkSpeed"] = (Action<float>)((a) =>
 		{
 			objectHolder.player.GetComponent<Controller>().walk_speed = a;
 		});
-		helpMessage += "setWalkSpeed(speed): set player's walking speed.\r\n";
+		helpMessageList.Add("setWalkSpeed(speed): set player's walking speed.");
 		script.Globals["setRunSpeed"] = (Action<float>)((a) =>
 		{
 			objectHolder.player.GetComponent<Controller>().run_speed = a;
 		});
-		helpMessage += "setRunSpeed(speed): set player's running speed.\r\n";
+		helpMessageList.Add("setRunSpeed(speed): set player's running speed.");
 		script.Globals["setTimeSpeed"] = (Action<float>)((a) =>
 		{
 			objectHolder.world.GetComponent<time>().delta_time = a;
 		});
-		helpMessage += "setTimeSpeed(speed): set world time speed.\r\n";
-		script.Globals["getItem"] = (Action<string, int>)((name, count) =>
+		helpMessageList.Add("setTimeSpeed(speed): set world time speed.");
+		script.Globals["addItem"] = (Action<string, int>)((name, count) =>
 		{
 			objectHolder.player.GetComponent<Backpack>().insert_item(name, count);
 		});
-		helpMessage += "getItem(name, count): get count items.\r\n";
+		helpMessageList.Add("addItem(name, count): get count items.");
 		script.Globals["infinityItem"] = (Action<bool>)((a) =>
 		{
 			objectHolder.player.GetComponent<Backpack>().infinite_block = a;
 		});
-		helpMessage += "infinityItem(boolean): set infinity block mode.\r\n";
+		helpMessageList.Add("infinityItem(boolean): set infinity block mode.");
 		script.Globals["setHealSpeed"] = (Action<float>)((a) =>
 		{
 			objectHolder.player.GetComponent<Controller>().heal_speed = a;
 		});
-		helpMessage += "setHealSpeed(speed): set player healing speed.\r\n";
+		helpMessageList.Add("setHealSpeed(speed): set player healing speed.");
 		script.Globals["rain"] = (Action<float, uint>)((last_time, scale) =>
 		{
 			objectHolder.world.GetComponent<Weather>().rain(last_time, scale);
 		});
-		helpMessage += "rain(last_time, heavy): start rainning for last_time, and how heavy it is.\r\n";
+		helpMessageList.Add("rain(last_time, heavy): start rainning for last_time, and how heavy it is.");
 		script.Globals["setRainingRate"] = (Action<float>)((a) =>
 		{
 			objectHolder.world.GetComponent<Weather>().raining_rate = a;
 		});
-		helpMessage += "setRainingRate(rate): set raining rate.\r\n";
-		script.Globals["getRainInfo()"] = (Action)(() =>
+		helpMessageList.Add("setRainingRate(rate): set raining rate.");
+		script.Globals["getRainInfo"] = (Action)(() =>
 		{
 			printMessage("rain_start: " +
 				objectHolder.world.GetComponent<Weather>().rain_start.ToString()
-				 + "\r\n"
 			);
 			printMessage("rain_end: " +
 				objectHolder.world.GetComponent<Weather>().rain_end.ToString()
-				 + "\r\n"
 			);
 			printMessage("rainfall: " +
 				objectHolder.world.GetComponent<Weather>().rainfall.ToString()
-				 + "\r\n"
 			);
 		});
-		helpMessage += "getRainInfo(): print weather info.\r\n";
+		helpMessageList.Add("getRainInfo(): print weather info.");
 		script.Globals["setAtkRange"] = (Action<float>)((a) =>
 		{
 			objectHolder.player.GetComponent<Controller>().atk_range = a;
 		});
-		helpMessage += "setAtkRange(range): set player attack range.\r\n";
+		helpMessageList.Add("setAtkRange(range): set player attack range.");
 		script.Globals["setTouchDistance"] = (Action<float>)((a) =>
 		{
 			objectHolder.player.GetComponent<Backpack>().touchable_distance = a;
 		});
-		helpMessage += "setTouchDistance(distance): set digging distance.\r\n";
+		helpMessageList.Add("setTouchDistance(distance): set digging distance.");
 	}
+}
+
+[System.Serializable]
+public class Message
+{
+	public Message()
+	{
+	}
+	public Message(string text)
+	{
+		this.text = text;
+	}
+	public string text;
+	public Text textObject;
 }
