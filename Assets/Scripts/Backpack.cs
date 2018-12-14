@@ -189,7 +189,7 @@ public class Backpack : MonoBehaviour {
         }
     }
 
-    public void inset_item(string name, int num)
+    public void insert_item(string name, int num)
     {
         if (material_num[name] <= 0)
             itembox_lite.Add(name);

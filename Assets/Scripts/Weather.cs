@@ -7,8 +7,8 @@ public class Weather : MonoBehaviour
 
     public Transform player;
     public float raining_rate;
-    private uint rainfall;// how heavy is the rain
-    private float rain_start, rain_end;
+    public uint rainfall;// how heavy is the rain
+    public float rain_start, rain_end;
 
     // Use this for initialization
     void Start()

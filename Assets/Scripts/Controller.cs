@@ -94,7 +94,11 @@ public class Controller : MonoBehaviour
 				speed = run_speed;
 				GetComponents<AudioSource>()[0].pitch = 1.3f;
 			}
-			else trigger_time = 0;
+			else
+			{
+				trigger_time = 0;
+				speed = walk_speed;
+			}
 		}
 		if (Input.GetKey(KeyCode.W))
 		{
