@@ -11,6 +11,7 @@ public class LuaConsoleControll : MonoBehaviour
 	public InputField inputField;
 	public GameObject chatPanel, textObject;
 	public ObjectHolder objectHolder;
+	public Scrollbar verticleScrollBar;
 	Script script;
 	List<string> prevCommands;
 	int prevCommandsIter;
@@ -51,13 +52,15 @@ public class LuaConsoleControll : MonoBehaviour
 			}
 			else if (inputField.text == "help")
 			{
+				printMessage("> help");
 				foreach (string msg in helpMessageList)
 				{
-					printMessage(msg);
+					printMessage(msg, Color.yellow);
 				}
 			}
 			else // execute lua
 			{
+				printMessage("> " + inputField.text);
 				try
 				{
 					script.DoString(inputField.text);
@@ -106,6 +109,7 @@ public class LuaConsoleControll : MonoBehaviour
 		newMessage.textObject = newText.GetComponent<Text>();
 		newMessage.textObject.text = newMessage.text;
 		messageList.Add(newMessage);
+		verticleScrollBar.value = 0f;
 	}
 	void printMessage(string msg, Color color)
 	{
@@ -115,12 +119,18 @@ public class LuaConsoleControll : MonoBehaviour
 		newMessage.textObject.text = newMessage.text;
 		newMessage.textObject.color = color;
 		messageList.Add(newMessage);
+		verticleScrollBar.value = 0f;
 	}
 
 	void loadCommands()
 	{
 		script.Globals["setTime"] = (Action<float>)((a) =>
 		{
+			if (a < 0 || a > 24000)
+			{
+				printMessage("Error, expected input: 0 <= time <= 24000", Color.red);
+				return;
+			}
 			objectHolder.world.GetComponent<time>().set_time(a);
 		});
 		helpMessageList.Add("setTime(time): set time to specific time.");
@@ -138,7 +148,7 @@ public class LuaConsoleControll : MonoBehaviour
 		{
 			if (a < 0 || a > 20)
 			{
-				printMessage("invalid input: 0 < hp < 20", Color.red);
+				printMessage("Error, expected input: 0 <= hp <= 20", Color.red);
 				return;
 			}
 			objectHolder.player.GetComponent<Controller>().set_HP(a);
@@ -146,21 +156,41 @@ public class LuaConsoleControll : MonoBehaviour
 		helpMessageList.Add("setHP(hp): set player's health to HP.");
 		script.Globals["setWalkSpeed"] = (Action<float>)((a) =>
 		{
+			if (a <= 0)
+			{
+				printMessage("Error, expected input: speed > 0", Color.red);
+				return;
+			}
 			objectHolder.player.GetComponent<Controller>().walk_speed = a;
 		});
 		helpMessageList.Add("setWalkSpeed(speed): set player's walking speed.");
 		script.Globals["setRunSpeed"] = (Action<float>)((a) =>
 		{
+			if (a <= 0)
+			{
+				printMessage("Error, expected input: speed > 0", Color.red);
+				return;
+			}
 			objectHolder.player.GetComponent<Controller>().run_speed = a;
 		});
 		helpMessageList.Add("setRunSpeed(speed): set player's running speed.");
 		script.Globals["setTimeSpeed"] = (Action<float>)((a) =>
 		{
+			if (a < 0 || a > 1000)
+			{
+				printMessage("Error, expected input: 0 <= speed <= 1000", Color.red);
+				return;
+			}
 			objectHolder.world.GetComponent<time>().delta_time = a;
 		});
 		helpMessageList.Add("setTimeSpeed(speed): set world time speed.");
 		script.Globals["addItem"] = (Action<string, int>)((name, count) =>
 		{
+			if (count < 0 || count > 9999)
+			{
+				printMessage("Error, expected input: 0 <= count <= 9999", Color.red);
+				return;
+			}
 			objectHolder.player.GetComponent<Backpack>().insert_item(name, count);
 		});
 		helpMessageList.Add("addItem(name, count): get count items.");
@@ -171,16 +201,36 @@ public class LuaConsoleControll : MonoBehaviour
 		helpMessageList.Add("infinityItem(boolean): set infinity block mode.");
 		script.Globals["setHealSpeed"] = (Action<float>)((a) =>
 		{
+			if (a < 0)
+			{
+				printMessage("Error, expected input: 0 <= speed", Color.red);
+				return;
+			}
 			objectHolder.player.GetComponent<Controller>().heal_speed = a;
 		});
 		helpMessageList.Add("setHealSpeed(speed): set player healing speed.");
 		script.Globals["rain"] = (Action<float, uint>)((last_time, scale) =>
 		{
+			if (last_time < 100 || last_time > 23799)
+			{
+				printMessage("Error, expected input: 100 <= last_time <= 23799", Color.red);
+				return;
+			}
+			if (scale < 10 || scale > 40)
+			{
+				printMessage("Error, expected input: 10 <= scale <= 40", Color.red);
+				return;
+			}
 			objectHolder.world.GetComponent<Weather>().rain(last_time, scale);
 		});
 		helpMessageList.Add("rain(last_time, heavy): start rainning for last_time, and how heavy it is.");
 		script.Globals["setRainingRate"] = (Action<float>)((a) =>
 		{
+			if (a < 0 || a > 1)
+			{
+				printMessage("Error, expected input: 0 <= rate <= 1", Color.red);
+				return;
+			}
 			objectHolder.world.GetComponent<Weather>().raining_rate = a;
 		});
 		helpMessageList.Add("setRainingRate(rate): set raining rate.");
@@ -199,11 +249,21 @@ public class LuaConsoleControll : MonoBehaviour
 		helpMessageList.Add("getRainInfo(): print weather info.");
 		script.Globals["setAtkRange"] = (Action<float>)((a) =>
 		{
+			if (a < 0)
+			{
+				printMessage("Error, expected input: rate >= 0", Color.red);
+				return;
+			}
 			objectHolder.player.GetComponent<Controller>().atk_range = a;
 		});
 		helpMessageList.Add("setAtkRange(range): set player attack range.");
 		script.Globals["setTouchDistance"] = (Action<float>)((a) =>
 		{
+			if (a < 0)
+			{
+				printMessage("Error, expected input: rate >= 0", Color.red);
+				return;
+			}
 			objectHolder.player.GetComponent<Backpack>().touchable_distance = a;
 		});
 		helpMessageList.Add("setTouchDistance(distance): set digging distance.");

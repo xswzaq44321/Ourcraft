@@ -12,7 +12,7 @@ public class MonsterGen : MonoBehaviour
 	public Transform MainLand;
 	public float generateInterval;
 	public int maxCount;
-	private float time;
+	private float elapseTime;
 
 	// Use this for initialization
 	void Start()
@@ -24,11 +24,11 @@ public class MonsterGen : MonoBehaviour
 	{
 		Vector3 dist = new Vector3(1, 0, 0);
 		Vector3 endPoint;
-		time += Time.deltaTime * 20;
-		if (sun.transform.eulerAngles.x > 270f && time > generateInterval
+		elapseTime += Time.deltaTime * sun.GetComponent<time>().delta_time;
+		if (time.interval(sun.GetComponent<time>().world_time, 18000, 6000) && elapseTime > generateInterval
             && this.transform.childCount < maxCount)
 		{ // night time
-			time = 0;
+			elapseTime = 0;
 			// decide where and how far from player that the monsters'll spawn
 			dist *= Random.Range(minRange, maxRange);
 			dist = Quaternion.Euler(0, Random.Range(0, 360), 0) * dist;
@@ -42,7 +42,7 @@ public class MonsterGen : MonoBehaviour
 			// target lock to player
 			enemy.GetComponent<MonsterController>().player = player;
 		}
-		else if(sun.transform.eulerAngles.x < 90f)
+		else if(time.interval(sun.GetComponent<time>().world_time, 6000, 18000))
 		{ // day time
 			if (this.transform.childCount > 0)
 			{

@@ -2000,7 +2000,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &681191396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2313,7 +2313,7 @@ MonoBehaviour:
   m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
+  m_HorizontalFit: 2
   m_VerticalFit: 2
 --- !u!224 &722159047
 RectTransform:
@@ -2330,7 +2330,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.000003855511, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &723591903
@@ -2834,7 +2834,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &863829682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4077,6 +4077,7 @@ MonoBehaviour:
   chatPanel: {fileID: 722159044}
   textObject: {fileID: 1672908552454056, guid: 9060929d18057e14792be3e061148132, type: 2}
   objectHolder: {fileID: 1146186124}
+  verticleScrollBar: {fileID: 1737786851}
   helpMessageList: []
   messageList: []
 --- !u!1001 &1468606572
@@ -5517,10 +5518,10 @@ MonoBehaviour:
   player: {fileID: 1449857181}
   sun: {fileID: 855311117}
   monster: {fileID: 1269967203822694, guid: 852fabf8b667f0a4f872435b6c8c289d, type: 2}
-  minRange: 30
-  maxRange: 50
+  minRange: 10
+  maxRange: 20
   MainLand: {fileID: 555320273}
-  generateInterval: 200
+  generateInterval: 20
   maxCount: 25
 --- !u!1 &2026282558
 GameObject:
