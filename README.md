@@ -1,4 +1,4 @@
-# OurCraft
+﻿# OurCraft
 
 ## How to play your game
 移動: WASD<br/>
@@ -8,6 +8,7 @@
 物品欄選擇: alpha-num<br/>
 取得物品: Left Click<br/>
 放置物品: Right Click<br/>
+開啟遊戲資訊: F1<br/>
 回到選單: Esc<br/>
 開啟console: Grave accent(`)<br/>
 
@@ -15,6 +16,7 @@
 Windows
 
 ## Your game
+Our game
 
 ## Game design (how to design your character, monster, etc.)
 character: 就是普通的維京人，喜歡蓋房子<br/>
@@ -29,10 +31,11 @@ Chen:
 2. 游標固定在螢幕中間以方便操作
 3. 放置方塊時排列整齊，且不會重疊
 4. 放置方塊時玩家需在放置位置一定距離內
-5. 在螢幕左上顯示玩家位置與滑鼠點選位置
-6. 降雨系統(陰天、降雨、降雨機率)
-7. 怪物雙聲道音效
-8. 按兩次W能跑
+5. 在螢幕左上顯示遊戲資訊
+6. 降雨系統(陰天、降雨、放晴、降雨機率)
+7. 怪物音效(雙聲道、根據距離調整音量)
+8. 怪物視野，進入怪物視野會被追逐
+9. 按兩次W能跑
 
 Weber
 1. 遊戲地圖的存檔

@@ -6,10 +6,9 @@ using UnityEngine.UI;
 public class Backpack : MonoBehaviour {
 
     public bool infinite_block;
-    private bool show_gameinfo = false;
     public float touchable_distance;
     public Canvas itembox_image;
-    public GameObject item_number_ui, game_info_ui, item_image;
+    public GameObject item_number_ui, item_image;
     private Vector3 select_frame_pos = new Vector3(57.5f, 0, 0);
     int selector = 0;
     List<string> itembox_lite = new List<string>();
@@ -49,25 +48,6 @@ public class Backpack : MonoBehaviour {
         if (infinite_block)
             for (int i = 0; i < itembox_lite.Count; i++)
                 item_number_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = "9999";
-
-        //show gameinfo//
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            if (show_gameinfo) show_gameinfo = false;
-            else
-            {
-                show_gameinfo = true;
-                game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "Clicked Position: ";
-                game_info_ui.GetComponent<Transform>().GetChild(2).GetComponent<Text>().text = "Distance: ";
-            }
-        }
-        if (show_gameinfo)
-            game_info_ui.GetComponent<Transform>().GetChild(0).GetComponent<Text>().text = "Player Position: " + transform.position.ToString();
-        else
-        {
-            for(int i = 0; i < game_info_ui.GetComponent<Transform>().childCount; i++)
-                game_info_ui.GetComponent<Transform>().GetChild(i).GetComponent<Text>().text = "";
-        }
 
         //select itembox//
         if (Input.GetKey(KeyCode.Alpha1))
@@ -121,22 +101,14 @@ public class Backpack : MonoBehaviour {
         {
             Ray ra = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit rch;
-            if (Physics.Raycast(ra, out rch))
+            if (Physics.Raycast(ra, out rch) && rch.collider.gameObject.tag == "Block" 
+                && Vector3.Distance(rch.point, transform.position) <= touchable_distance)
             {
-                if (rch.collider.gameObject.tag == "Block" && Vector3.Distance(rch.point, transform.position) <= touchable_distance)
-                {
-                    string[] separator = { "(", " (" };
-                    string item = rch.collider.gameObject.name.Split(separator, System.StringSplitOptions.RemoveEmptyEntries)[0];
-                    if (material_num[item] <= 0) itembox_lite.Add(item);
-                    material_num[item]++;
-                    Destroy(rch.transform.gameObject);
-                }
-
-                if (show_gameinfo)
-                {
-                    game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
-                    game_info_ui.GetComponent<Transform>().GetChild(2).GetComponent<Text>().text = "Distance: " + Vector3.Distance(rch.point, transform.position).ToString();
-                }
+                string[] separator = { "(", " (" };
+                string item = rch.collider.gameObject.name.Split(separator, System.StringSplitOptions.RemoveEmptyEntries)[0];
+                if (material_num[item] <= 0) itembox_lite.Add(item);
+                material_num[item]++;
+                Destroy(rch.transform.gameObject);
             }
         }
 
@@ -145,43 +117,37 @@ public class Backpack : MonoBehaviour {
         {
             Ray ra = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit rch;
-            if (Physics.Raycast(ra, out rch))
+            if (Physics.Raycast(ra, out rch) && Vector3.Distance(rch.point, transform.position) <= touchable_distance)
             {
-                if(Vector3.Distance(rch.point, transform.position) <= touchable_distance)
+                if (rch.collider.gameObject.tag == "Ground")
                 {
-                    if (rch.collider.gameObject.tag == "Ground")
-                    {
-                        GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
-                        float PosX = Mathf.Floor(rch.point.x) + block.transform.localScale.x / 2;
-                        float PosY = 0;
-                        if (Physics.gravity.y < 0) PosY = rch.point.y + block.transform.localScale.y / 2;
-                        else if(Physics.gravity.y > 0) PosY = rch.point.y - block.transform.localScale.y / 2;
-                        float PosZ = Mathf.Floor(rch.point.z) + block.transform.localScale.z / 2;
-                        block.transform.position = new Vector3(PosX, PosY, PosZ);
-                    }
-                    else if (rch.collider.gameObject.tag == "Block")
-                    {
-                        GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
-                        if (rch.collider.gameObject.transform.position.x - rch.point.x == block.transform.localScale.x / 2)
-                            block.transform.position = rch.collider.gameObject.transform.position - new Vector3(block.transform.localScale.x, 0, 0);
-                        else if (rch.collider.gameObject.transform.position.x - rch.point.x == -block.transform.localScale.x / 2)
-                            block.transform.position = rch.collider.gameObject.transform.position + new Vector3(block.transform.localScale.x, 0, 0);
-                        else if (Mathf.Abs(rch.collider.gameObject.transform.position.y - rch.point.y - block.transform.localScale.y / 2) < 0.01f)
-                            block.transform.position = rch.collider.gameObject.transform.position - new Vector3(0, block.transform.localScale.y, 0);
-                        else if (Mathf.Abs(rch.collider.gameObject.transform.position.y - rch.point.y + block.transform.localScale.y / 2) < 0.01f)
-                            block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, block.transform.localScale.y, 0);
-                        else if (rch.collider.gameObject.transform.position.z - rch.point.z == block.transform.localScale.z / 2)
-                            block.transform.position = rch.collider.gameObject.transform.position - new Vector3(0, 0, block.transform.localScale.z);
-                        else if (rch.collider.gameObject.transform.position.z - rch.point.z == -block.transform.localScale.z / 2)
-                            block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, 0, block.transform.localScale.z);
-                    }
-                    if(!infinite_block)
-                        if (--material_num[itembox_lite[selector]] <= 0)
-                            itembox_lite.RemoveAt(selector);
+                    GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
+                    float PosX = Mathf.Floor(rch.point.x) + block.transform.localScale.x / 2;
+                    float PosY = 0;
+                    if (Physics.gravity.y < 0) PosY = rch.point.y + block.transform.localScale.y / 2;
+                    else if (Physics.gravity.y > 0) PosY = rch.point.y - block.transform.localScale.y / 2;
+                    float PosZ = Mathf.Floor(rch.point.z) + block.transform.localScale.z / 2;
+                    block.transform.position = new Vector3(PosX, PosY, PosZ);
                 }
-
-                if (show_gameinfo)
-                    game_info_ui.GetComponent<Transform>().GetChild(1).GetComponent<Text>().text = "Clicked Position: " + rch.point.ToString();
+                else if (rch.collider.gameObject.tag == "Block")
+                {
+                    GameObject block = Instantiate(Resources.Load("blocks/" + itembox_lite[selector]) as GameObject);
+                    if (rch.collider.gameObject.transform.position.x - rch.point.x == block.transform.localScale.x / 2)
+                        block.transform.position = rch.collider.gameObject.transform.position - new Vector3(block.transform.localScale.x, 0, 0);
+                    else if (rch.collider.gameObject.transform.position.x - rch.point.x == -block.transform.localScale.x / 2)
+                        block.transform.position = rch.collider.gameObject.transform.position + new Vector3(block.transform.localScale.x, 0, 0);
+                    else if (Mathf.Abs(rch.collider.gameObject.transform.position.y - rch.point.y - block.transform.localScale.y / 2) < 0.01f)
+                        block.transform.position = rch.collider.gameObject.transform.position - new Vector3(0, block.transform.localScale.y, 0);
+                    else if (Mathf.Abs(rch.collider.gameObject.transform.position.y - rch.point.y + block.transform.localScale.y / 2) < 0.01f)
+                        block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, block.transform.localScale.y, 0);
+                    else if (rch.collider.gameObject.transform.position.z - rch.point.z == block.transform.localScale.z / 2)
+                        block.transform.position = rch.collider.gameObject.transform.position - new Vector3(0, 0, block.transform.localScale.z);
+                    else if (rch.collider.gameObject.transform.position.z - rch.point.z == -block.transform.localScale.z / 2)
+                        block.transform.position = rch.collider.gameObject.transform.position + new Vector3(0, 0, block.transform.localScale.z);
+                }
+                if (!infinite_block)
+                    if (--material_num[itembox_lite[selector]] <= 0)
+                        itembox_lite.RemoveAt(selector);
             }
         }
     }
