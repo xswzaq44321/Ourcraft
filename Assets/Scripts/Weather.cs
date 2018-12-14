@@ -27,6 +27,7 @@ public class Weather : MonoBehaviour
             //starts raining
             else if (time.interval(GetComponent<time>().world_time, rain_start, rain_end))
             {
+                if (!GetComponent<AudioSource>().isPlaying) GetComponent<AudioSource>().Play();
                 for (int i = 0; i < rainfall; i++)
                 {
                     GameObject rain = Instantiate(Resources.Load("Rain") as GameObject);
@@ -40,6 +41,7 @@ public class Weather : MonoBehaviour
             //turn sunny
             else if (time.interval(GetComponent<time>().world_time, rain_end, time.add(rain_end, 200)))
             {
+                if (GetComponent<AudioSource>().isPlaying) GetComponent<AudioSource>().Stop();
                 GetComponent<Light>().intensity += 0.1f * Time.deltaTime;
                 if (!time.interval(time.add(GetComponent<time>().world_time, GetComponent<time>().delta_time * Time.deltaTime), rain_end, time.add(rain_end, 200)))
                 {
@@ -66,6 +68,7 @@ public class Weather : MonoBehaviour
     //0 < last_time < 24000, 10 < heavy < 40
     public void rain(float last_time, uint heavy)
     {
+        GetComponent<AudioSource>().Play();
         GetComponent<Light>().intensity = 0;
         rainfall = heavy;
         rain_start = GetComponent<time>().world_time;
