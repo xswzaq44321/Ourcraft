@@ -267,6 +267,11 @@ public class LuaConsoleControll : MonoBehaviour
 			objectHolder.player.GetComponent<Backpack>().touchable_distance = a;
 		});
 		helpMessageList.Add("setTouchDistance(distance): set digging distance.");
+		script.Globals["enableFly"] = (Action<bool>)((a) =>
+		{
+			objectHolder.player.GetComponent<Controller>().enable_fly = a;
+		});
+		helpMessageList.Add("enableFly(boolean): enable flying mode.");
 	}
 }
 
