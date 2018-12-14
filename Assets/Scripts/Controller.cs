@@ -13,8 +13,8 @@ public class Controller : MonoBehaviour
 	public Canvas mainCanvas;
 	public Canvas deadCanvas;
 	private int HP = 0, side = 1;
-	private bool onGround = false;
-    public bool fly = false;
+	private bool onGround = false, fly = false;
+    public bool enable_fly = false;
 	private Animator an;
 	private float trigger_time = 1, speed, heal_time = 0;
     private Material default_skybox;
@@ -126,30 +126,33 @@ public class Controller : MonoBehaviour
             onGround = true;
 
         //character flying//
-        if (!fly && Input.GetKeyDown(KeyCode.Space))
+        if (enable_fly)
         {
-            if (trigger_time <= 0.5f)
+            if (!fly && Input.GetKeyDown(KeyCode.Space))
             {
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
-                GetComponent<Rigidbody>().useGravity = false;
-                transform.localPosition += transform.up / 0.5f;
-                fly = true;
+                if (trigger_time <= 0.5f)
+                {
+                    GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    GetComponent<Rigidbody>().useGravity = false;
+                    transform.localPosition += transform.up / 0.5f;
+                    fly = true;
+                }
+                else trigger_time = 0;
             }
-            else trigger_time = 0;
-        }
-        else if (fly && Input.GetKeyDown(KeyCode.Space))
-        {
-            if (trigger_time <= 0.5f)
+            else if (fly && Input.GetKeyDown(KeyCode.Space))
             {
-                GetComponent<Rigidbody>().useGravity = true;
-                fly = false;
+                if (trigger_time <= 0.5f)
+                {
+                    GetComponent<Rigidbody>().useGravity = true;
+                    fly = false;
+                }
+                else trigger_time = 0;
             }
-            else trigger_time = 0;
+            if (fly && Input.GetKey(KeyCode.Space))
+                transform.position += transform.up * speed * Time.deltaTime;
+            if (fly && Input.GetKey(KeyCode.LeftShift))
+                transform.position -= transform.up * speed * Time.deltaTime;
         }
-        if(fly && Input.GetKey(KeyCode.Space))
-            transform.position += transform.up * speed * Time.deltaTime;
-        if (fly && Input.GetKey(KeyCode.LeftShift))
-            transform.position -= transform.up * speed * Time.deltaTime;
 
         //camera angle//
         transform.Rotate(new Vector3(0, side * Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
