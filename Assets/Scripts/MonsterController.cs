@@ -90,6 +90,6 @@ public class MonsterController : MonoBehaviour {
             HP = MAX_HP;
         else if (HP <= 0)
             Destroy(this.gameObject);
-		GetComponent<Rigidbody>().AddForce((-transform.forward + transform.up)*200);
+		GetComponent<Rigidbody>().AddForce((-transform.forward + transform.up) * 100);
 	}
 }

@@ -14,6 +14,7 @@ public class Controller : MonoBehaviour
 	public Canvas deadCanvas;
 	private int HP = 0, side = 1;
 	private bool onGround = false;
+    public bool fly = false;
 	private Animator an;
 	private float trigger_time = 1, speed, heal_time = 0;
     private Material default_skybox;
@@ -84,11 +85,6 @@ public class Controller : MonoBehaviour
 		//character moving + jumping//
 		an.SetFloat("speed", 0);
 		trigger_time += Time.deltaTime;
-		if (speed == run_speed && Input.GetKeyUp(KeyCode.W))
-		{
-			speed = walk_speed;
-			GetComponents<AudioSource>()[0].pitch = 1;
-		}
 		if (Input.GetKeyDown(KeyCode.W))
 		{
 			if (speed == walk_speed && trigger_time <= 0.5f)
@@ -100,7 +96,8 @@ public class Controller : MonoBehaviour
 			{
 				trigger_time = 0;
 				speed = walk_speed;
-			}
+                GetComponents<AudioSource>()[0].pitch = 1;
+            }
 		}
 		if (Input.GetKey(KeyCode.W))
 		{
@@ -120,7 +117,7 @@ public class Controller : MonoBehaviour
 		{
 			transform.localPosition += speed * transform.right * Time.deltaTime;
 		}
-		if (Input.GetKey(KeyCode.Space) && onGround)
+		if (!fly && Input.GetKey(KeyCode.Space) && onGround)
 		{
 			GetComponent<Rigidbody>().AddForce(Vector3.up * jump * side);
 			onGround = false;
@@ -128,8 +125,34 @@ public class Controller : MonoBehaviour
         if (Input.GetKey(KeyCode.Alpha0))
             onGround = true;
 
-		//camera angle//
-		transform.Rotate(new Vector3(0, side * Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
+        //character flying//
+        if (!fly && Input.GetKeyDown(KeyCode.Space))
+        {
+            if (trigger_time <= 0.5f)
+            {
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                GetComponent<Rigidbody>().useGravity = false;
+                transform.localPosition += transform.up / 0.5f;
+                fly = true;
+            }
+            else trigger_time = 0;
+        }
+        else if (fly && Input.GetKeyDown(KeyCode.Space))
+        {
+            if (trigger_time <= 0.5f)
+            {
+                GetComponent<Rigidbody>().useGravity = true;
+                fly = false;
+            }
+            else trigger_time = 0;
+        }
+        if(fly && Input.GetKey(KeyCode.Space))
+            transform.position += transform.up * speed * Time.deltaTime;
+        if (fly && Input.GetKey(KeyCode.LeftShift))
+            transform.position -= transform.up * speed * Time.deltaTime;
+
+        //camera angle//
+        transform.Rotate(new Vector3(0, side * Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
 		float max = transform.GetChild(0).eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 		if (max > 270 || max < 90)
 			transform.GetChild(0).Rotate(new Vector3(-Input.GetAxis("Mouse Y") * sensitivity, 0, 0) * Time.deltaTime);
@@ -167,9 +190,17 @@ public class Controller : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
-		if (col.gameObject.tag == "Ground" || (col.gameObject.tag == "Block" && col.gameObject.transform.position.y + col.gameObject.transform.localScale.y / 2 < gameObject.transform.position.y))
-			onGround = true;
-	}
+        if (col.gameObject.tag == "Ground" ||
+            (side == 1 && col.gameObject.tag == "Block" && col.gameObject.transform.position.y + col.gameObject.transform.localScale.y / 2 <= gameObject.transform.position.y))
+            onGround = true;
+        else if (side == -1 && col.gameObject.tag == "Block" && col.gameObject.transform.position.y - col.gameObject.transform.localScale.y / 2 >= gameObject.transform.position.y)
+            onGround = true;
+        if (col.gameObject.tag == "Ground")
+        {
+            GetComponent<Rigidbody>().useGravity = true;
+            fly = false;
+        }
+    }
 
 	public void Add_HP(int delataHP)
 	{

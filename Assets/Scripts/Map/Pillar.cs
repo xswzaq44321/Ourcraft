@@ -13,7 +13,6 @@ public class Pillar : MonoBehaviour {
         for (float i = 0; i < quantity; i++)
         {
             float PosX = Mathf.Floor(Random.Range(rangeX.x, rangeX.y)) + 0.5f;
-            float PosY = MainLand.transform.position.y + 0.5f;
             float PosZ = Mathf.Floor(Random.Range(rangeZ.x, rangeZ.y)) + 0.5f;
             for (float j = (int)Random.Range(rangeHeight.x, rangeHeight.y) + 0.5f; j > 0; j--)
             {
