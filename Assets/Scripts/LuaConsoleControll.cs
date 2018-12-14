@@ -136,6 +136,11 @@ public class LuaConsoleControll : MonoBehaviour
 		helpMessageList.Add("loadMap(filename): load map filename, filename could be spared.");
 		script.Globals["setHP"] = (Action<int>)((a) =>
 		{
+			if (a < 0 || a > 20)
+			{
+				printMessage("invalid input: 0 < hp < 20", Color.red);
+				return;
+			}
 			objectHolder.player.GetComponent<Controller>().set_HP(a);
 		});
 		helpMessageList.Add("setHP(hp): set player's health to HP.");
