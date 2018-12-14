@@ -16,6 +16,7 @@ public class Controller : MonoBehaviour
 	private bool onGround = false;
 	private Animator an;
 	private float trigger_time = 1, speed, heal_time = 0;
+    private Material default_skybox;
 
 	// Use this for initialization
 	void Start()
@@ -29,6 +30,7 @@ public class Controller : MonoBehaviour
 		GetComponents<AudioSource>()[2].Stop();
 		consoleCanvas.enabled = false;
 		deadCanvas.enabled = false;
+        default_skybox = RenderSettings.skybox;
 	}
 
 	// Update is called once per frame
@@ -150,12 +152,14 @@ public class Controller : MonoBehaviour
             side = -1;
             Physics.gravity *= -1;
             transform.Rotate(new Vector3(180, 0, 0));
+            RenderSettings.skybox = Resources.Load("Viking/Skyboxes/Skybox_sunset") as Material;
         }
         else if (transform.position.y > 20 && side == -1)
         {
             side = 1;
             Physics.gravity *= -1;
             transform.Rotate(new Vector3(180, 0, 0));
+            RenderSettings.skybox = default_skybox;
         }
 
         Cursor.lockState = CursorLockMode.Locked;
