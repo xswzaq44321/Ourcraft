@@ -12,13 +12,26 @@ public class Controller : MonoBehaviour
 	public Canvas consoleCanvas;
 	public Canvas mainCanvas;
 	public Canvas deadCanvas;
-    public bool enable_fly = false;
+	public bool enable_fly
+	{
+		get { return _enable_fly; }
+		set
+		{
+			if(value == false && fly)
+			{
+				GetComponent<Rigidbody>().useGravity = true;
+				fly = false;
+			}
+			_enable_fly = value;
+		}
+	}
     public Material default_skybox;
 	public int side = 1;
 	private int HP = 0;
 	private bool onGround = false, fly = false;
 	private Animator an;
 	private float run_time = 1, fly_time = 1, speed, heal_time = 0;
+	private bool _enable_fly;
 
 	// Use this for initialization
 	void Start()
