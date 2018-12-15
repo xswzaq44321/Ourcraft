@@ -17,7 +17,7 @@ public class Controller : MonoBehaviour
     public bool enable_fly = false;
 	private Animator an;
 	private float run_time = 1, fly_time = 1, speed, heal_time = 0;
-    private Material default_skybox;
+    public Material default_skybox;
 
 	// Use this for initialization
 	void Start()
