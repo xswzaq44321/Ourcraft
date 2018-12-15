@@ -12,9 +12,9 @@
 回到選單: Esc<br/>
 開啟console: Grave accent(\`)<br/>
 在飛行模式下:
-> 進入/離開 飛行: 雙擊Space
-> 上升: Space
-> 下降: Left Shift
+> 進入/離開 飛行: 雙擊Space<br/>
+> 上升: Space<br/>
+> 下降: Left Shift<br/>
 
 ## Environment
 Windows
@@ -29,6 +29,18 @@ monster: 殭屍化的維京人，動作緩慢，很吵<br/>
 遊戲中可以使用console，在console中輸入help可以看到所有指令的說明。<br/>
 使用console的saveMap可以儲存地圖，Ex. saveMap("myCYKA")。預設儲存位置為"我的文件/Ourcraft Maps/"<br/>
 你也可以用console的loadMap來載入地圖。在使用saveMap、loadMap時若參數留白，將會使用預設檔名map1.json<br/>
+使用addItem(name, count)時，name要輸入方塊的名稱，名稱列表如下:<br/>
+> "brick"<br/>
+> "cobblestone"<br/>
+> "diamond_ore"<br/>
+> "dirt"<br/>
+> "gold_ore"<br/>
+> "grass"<br/>
+> "iron_ore"<br/>
+> "log_oak"<br/>
+> "planks_oak"<br/>
+> "stone"<br/>
+> "sand"<br/>
 
 ## Bonus
 Chen:
