@@ -16,13 +16,14 @@ public class Controller : MonoBehaviour
 	private bool onGround = false, fly = false;
     public bool enable_fly = false;
 	private Animator an;
-	private float trigger_time = 1, speed, heal_time = 0;
+	private float walk_time = 1, fly_time = 1, speed, heal_time = 0;
     private Material default_skybox;
 
 	// Use this for initialization
 	void Start()
 	{
-		Cursor.visible = false;
+        Physics.gravity = new Vector3(0, -Mathf.Abs(Physics.gravity.y), 0);
+        Cursor.visible = false;
 		speed = walk_speed;
 		Add_HP(MAX_HP);
 		an = GetComponent<Animator>();
@@ -84,17 +85,17 @@ public class Controller : MonoBehaviour
 
 		//character moving + jumping//
 		an.SetFloat("speed", 0);
-		trigger_time += Time.deltaTime;
+		walk_time += Time.deltaTime;
 		if (Input.GetKeyDown(KeyCode.W))
 		{
-			if (speed == walk_speed && trigger_time <= 0.5f)
+			if (speed == walk_speed && walk_time <= 0.5f)
 			{
 				speed = run_speed;
 				GetComponents<AudioSource>()[0].pitch = 1.3f;
 			}
 			else
 			{
-				trigger_time = 0;
+				walk_time = 0;
 				speed = walk_speed;
                 GetComponents<AudioSource>()[0].pitch = 1;
             }
@@ -130,23 +131,23 @@ public class Controller : MonoBehaviour
         {
             if (!fly && Input.GetKeyDown(KeyCode.Space))
             {
-                if (trigger_time <= 0.5f)
+                if (fly_time <= 0.5f)
                 {
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
                     GetComponent<Rigidbody>().useGravity = false;
                     transform.localPosition += transform.up / 0.5f;
                     fly = true;
                 }
-                else trigger_time = 0;
+                else fly_time = 0;
             }
             else if (fly && Input.GetKeyDown(KeyCode.Space))
             {
-                if (trigger_time <= 0.5f)
+                if (fly_time <= 0.5f)
                 {
                     GetComponent<Rigidbody>().useGravity = true;
                     fly = false;
                 }
-                else trigger_time = 0;
+                else fly_time = 0;
             }
             if (fly && Input.GetKey(KeyCode.Space))
                 transform.position += transform.up * speed * Time.deltaTime;
