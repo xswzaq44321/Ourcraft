@@ -62,16 +62,19 @@ public class MapSaveRead : MonoBehaviour
 		if (Physics.gravity.y != map.gravity_y)
 		{
 			Physics.gravity *= -1;
+			player.transform.Rotate(new Vector3(180, 0, 0));
 		}
 		if(Physics.gravity.y > 0)
 		{
+			// over wrold setting
 			RenderSettings.skybox = Resources.Load("Viking/Skyboxes/Skybox_sunset") as Material;
-			player.transform.Rotate(new Vector3(180, 0, 0));
 			player.GetComponent<Controller>().side = -1;
 		}
 		else
 		{
+			// mirror world setting
 			RenderSettings.skybox = player.GetComponent<Controller>().default_skybox;
+			player.GetComponent<Controller>().side = 1;
 		}
 	}
 	// save blocks & player informations
