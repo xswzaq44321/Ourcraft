@@ -150,7 +150,7 @@ public class Controller : MonoBehaviour
                 {
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
                     GetComponent<Rigidbody>().useGravity = false;
-                    transform.localPosition += transform.up / 0.5f;
+                    //transform.localPosition += transform.up / 0.5f;
                     fly = true;
                 }
                 else fly_time = 0;
@@ -211,11 +211,14 @@ public class Controller : MonoBehaviour
 	{
         if (col.gameObject.tag == "Ground" ||
             (side == 1 && col.gameObject.tag == "Block" && col.gameObject.transform.position.y + col.gameObject.transform.localScale.y / 2 <= gameObject.transform.position.y))
-            onGround = true;
-        else if (side == -1 && col.gameObject.tag == "Block" && col.gameObject.transform.position.y - col.gameObject.transform.localScale.y / 2 >= gameObject.transform.position.y)
-            onGround = true;
-        if (col.gameObject.tag == "Ground")
         {
+            onGround = true;
+            GetComponent<Rigidbody>().useGravity = true;
+            fly = false;
+        }
+        else if (side == -1 && col.gameObject.tag == "Block" && col.gameObject.transform.position.y - col.gameObject.transform.localScale.y / 2 >= gameObject.transform.position.y)
+        {
+            onGround = true;
             GetComponent<Rigidbody>().useGravity = true;
             fly = false;
         }
