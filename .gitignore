@@ -41,3 +41,6 @@ Assets/StreamingAssets/crashlytics-build.properties
 
 # Gource stuffs
 Gource/
+
+# rar
+*.rar

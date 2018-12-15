@@ -33,6 +33,9 @@ public class MapSaveRead : MonoBehaviour
 		map = new Map();
 		map.openJson(fileName);
 
+		// get player
+		var player = GameObject.Find("player");
+
 		// destroying old blocks
 		var oldBlocks = GameObject.FindGameObjectsWithTag("Block");
 		for (int i = 0; i < oldBlocks.Length; ++i)
@@ -50,12 +53,26 @@ public class MapSaveRead : MonoBehaviour
 			forest.transform.position = new Vector3(block.X, block.Y, block.Z);
 		}
 		// load player informations
-		var player = GameObject.Find("player");
 		player.transform.position = new Vector3(map.player.pos.X, map.player.pos.Y, map.player.pos.Z);
 		player.GetComponent<Controller>().set_HP(map.player.HP);
 		player.GetComponent<Backpack>().load_backpack(map.player.backpack);
 		// load time
 		GameObject.Find("World").GetComponent<time>().set_time(map.time);
+		// load gravity
+		if (Physics.gravity.y != map.gravity_y)
+		{
+			Physics.gravity *= -1;
+		}
+		if(Physics.gravity.y > 0)
+		{
+			RenderSettings.skybox = Resources.Load("Viking/Skyboxes/Skybox_sunset") as Material;
+			player.transform.Rotate(new Vector3(180, 0, 0));
+			player.GetComponent<Controller>().side = -1;
+		}
+		else
+		{
+			RenderSettings.skybox = player.GetComponent<Controller>().default_skybox;
+		}
 	}
 	// save blocks & player informations
 	public void saveMap(string fileName)
@@ -92,6 +109,8 @@ public class MapSaveRead : MonoBehaviour
 			map.time = GameObject.Find("World").GetComponent<time>().get_time();
 		}
 		map.player.backpack = player.GetComponent<Backpack>().save_backpack().ConvertAll(s => string.Copy(s));
+		// gravity
+		map.gravity_y = Physics.gravity.y;
 
 		map.saveToJson(fileName);
 	}
@@ -113,6 +132,7 @@ public class Map
 	public List<Block> blocks;
 	public Player player;
 	public float time;
+	public float gravity_y;
 	string savePath;
 
 	// transform map to json
@@ -140,6 +160,8 @@ public class Map
 		this.player = new Player(oldMap.player);
 		// time
 		this.time = oldMap.time;
+		// gravity
+		this.gravity_y = oldMap.gravity_y;
 
 		sr.Close();
 		fs.Close();

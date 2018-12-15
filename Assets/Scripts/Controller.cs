@@ -12,12 +12,13 @@ public class Controller : MonoBehaviour
 	public Canvas consoleCanvas;
 	public Canvas mainCanvas;
 	public Canvas deadCanvas;
-	private int HP = 0, side = 1;
-	private bool onGround = false, fly = false;
     public bool enable_fly = false;
+    public Material default_skybox;
+	public int side = 1;
+	private int HP = 0;
+	private bool onGround = false, fly = false;
 	private Animator an;
 	private float run_time = 1, fly_time = 1, speed, heal_time = 0;
-    public Material default_skybox;
 
 	// Use this for initialization
 	void Start()
