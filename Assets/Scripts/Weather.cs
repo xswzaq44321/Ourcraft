@@ -8,7 +8,7 @@ public class Weather : MonoBehaviour
     public Transform player;
     public float raining_rate;
     public uint rainfall;// how heavy is the rain
-    public float rain_start, rain_end;
+    public float rain_start = 0, rain_end = 0;
 
     // Use this for initialization
     void Start()
@@ -60,8 +60,8 @@ public class Weather : MonoBehaviour
         if (Random.Range(0, 100) <= 100 * raining_rate)
         {
             rainfall = (uint)Random.Range(10, 40);
-            rain_start = time.add(GetComponent<time>().world_time, Random.Range(500, 23000));
-            rain_end = time.add(rain_start, Random.Range(500, 30000));
+            rain_start = time.add(GetComponent<time>().world_time, Random.Range(500, 20000));
+            rain_end = time.add(rain_start, Random.Range(500, 3000));
         }
     }
 

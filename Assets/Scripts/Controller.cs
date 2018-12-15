@@ -16,7 +16,7 @@ public class Controller : MonoBehaviour
 	private bool onGround = false, fly = false;
     public bool enable_fly = false;
 	private Animator an;
-	private float walk_time = 1, fly_time = 1, speed, heal_time = 0;
+	private float run_time = 1, fly_time = 1, speed, heal_time = 0;
     private Material default_skybox;
 
 	// Use this for initialization
@@ -85,17 +85,17 @@ public class Controller : MonoBehaviour
 
 		//character moving + jumping//
 		an.SetFloat("speed", 0);
-		walk_time += Time.deltaTime;
+		run_time += Time.deltaTime;
 		if (Input.GetKeyDown(KeyCode.W))
 		{
-			if (speed == walk_speed && walk_time <= 0.5f)
+			if (speed == walk_speed && run_time <= 0.5f)
 			{
 				speed = run_speed;
 				GetComponents<AudioSource>()[0].pitch = 1.3f;
 			}
 			else
 			{
-				walk_time = 0;
+				run_time = 0;
 				speed = walk_speed;
                 GetComponents<AudioSource>()[0].pitch = 1;
             }
@@ -127,6 +127,7 @@ public class Controller : MonoBehaviour
             onGround = true;
 
         //character flying//
+        fly_time += Time.deltaTime;
         if (enable_fly)
         {
             if (!fly && Input.GetKeyDown(KeyCode.Space))
@@ -157,9 +158,9 @@ public class Controller : MonoBehaviour
 
         //camera angle//
         transform.Rotate(new Vector3(0, side * Input.GetAxis("Mouse X") * sensitivity, 0) * Time.deltaTime, Space.World);
-		float max = transform.GetChild(0).eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-		if (max > 270 || max < 90)
-			transform.GetChild(0).Rotate(new Vector3(-Input.GetAxis("Mouse Y") * sensitivity, 0, 0) * Time.deltaTime);
+		float max = transform.GetChild(0).eulerAngles.x - side * Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        if (max > 270 || max < 90)
+            transform.GetChild(0).Rotate(new Vector3(-Input.GetAxis("Mouse Y") * sensitivity, 0, 0) * Time.deltaTime);
 
 		//attack monster//
 		if (Input.GetMouseButtonDown(0))
