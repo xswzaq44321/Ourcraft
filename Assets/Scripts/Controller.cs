@@ -245,6 +245,7 @@ public class Controller : MonoBehaviour
 		}
 		if (HP <= 0)
 		{
+            heal_time = 0;
 			Cursor.visible = true;
 			GameObject.Find("GameSaveReadObject").GetComponent<MapSaveRead>().saveMap(null);
 			Cursor.lockState = CursorLockMode.None;
